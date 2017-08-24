@@ -1,6 +1,6 @@
 {
   "name": "typescript-library-bundler",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "bin": {
     "tsb": "bin/cli.js"
@@ -12,6 +12,20 @@
     "lint": "tslint -p tsconfig.json --type-check",
     "debug": "node --inspect-brk ./debug-ts.js",
     "build": "tsc --target es5 --declaration true"
+  },
+  "keywords": [
+    "typescript",
+    "angular",
+    "library",
+    "bundle",
+    "bundler"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aminpaks/typescript-library-bundler"
+  },
+  "bugs": {
+    "url": "https://github.com/aminpaks/typescript-library-bundler/issues"
   },
   "peerDependencies": {
     "typescript": ">= 1.8.0 < 3"
