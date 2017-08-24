@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "outDir": "./dist",
+    "lib": [
+      "es2015",
+      "dom"
+    ]
+  },
+  "files": [
+    "./src/public_api.ts"
+  ],
+  "bundlerOptions": {
+    "externals": {
+    }
+  }
+}

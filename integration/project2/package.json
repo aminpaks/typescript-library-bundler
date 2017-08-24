@@ -1,0 +1,10 @@
+{
+  "name": "ts-awesome-lib-2",
+  "private": true,
+  "version": "0.0.2",
+  "main": "./dist/bundles/ts-awesome-lib-2.umd.js",
+  "module": "./dist/ts-awesome-lib-2.es5.js",
+  "es2015": "./dist/ts-awesome-lib-2.js",
+  "typings": "./dist/ts-awesome-lib-2.d.ts",
+  "license": "MIT"
+}

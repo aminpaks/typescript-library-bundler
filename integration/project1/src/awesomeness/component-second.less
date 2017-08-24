@@ -1,0 +1,23 @@
+// Less comments are JS alike
+
+// Import modules
+@import "~less/test/less/css-3.less";
+@import (inline) "~less/test/css/parens.css";
+@import (reference) "~less/test/less/variables.less";
+
+// CSS deep selector
+@deep: ~'>>>';
+
+table @{deep} br {
+  background: black;
+}
+
+:host {
+  display: block;
+  background: @important-var-two;
+
+  // Angular deep selector
+  & ::ng-deep h1 {
+    font-size: 2em;
+  }
+}

@@ -1,0 +1,38 @@
+<div *ngFor="let thread of threads" class="thread-tile">
+  <div class="description col-sm-12">
+    <div class="author-card col-sm-2">
+      <div>
+        <img src="{{thread.profileImage}}" class="img-fluid">
+      </div>
+      <div class="awards">
+        <span class="author-card-renown" [ngClass]="test" (click)="loadSpanCheck($event)">
+                  {{thread.renown}}
+              </span>
+        <ul class="list-inline">
+          <li style="padding: 2px" *ngIf="thread.numBlue > 0"><img src="./assets/blue.png"> {{thread.numBlue}}</li>
+          <li style="padding: 2px" *ngIf="thread.numGold > 0"><img src="./assets/gold.png"> {{thread.numGold}}</li>
+          <li style="padding: 2px" *ngIf="thread.numSilver > 0"><img src="./assets/silver.png"> {{thread.numSilver}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="title col-sm-10">{{thread.title}}</div>
+    <div class="author-date col-sm-10">
+      by <a href="#">{{thread.author}}</a> on {{ (thread.date | amFromUnix) | amDateFormat:'MM/DD/YY'}} at {{ (thread.date
+      | amFromUnix) | amDateFormat:'hh:mmA'}}
+    </div>
+    <div class="participants col-sm-10">
+      Participants:
+      <ul *ngFor="let participant of thread.participants" class="participant list-inline">
+        <li><a href="#">{{participant}}</a></li>
+      </ul>
+    </div>
+    <div class="tags-container col-sm-10">
+      <div *ngFor="let tag of thread.tags">
+        <div class="tag">{{tag}}</div>
+      </div>
+    </div>
+    <div class="thread-metrics">
+      {{thread.numPosts}} posts {{thread.numFlags}} flags {{thread.numParticipants}} participants {{thread.numContributors}} contributors
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+{
+  "name": "typescript-library-bundler",
+  "version": "0.0.1",
+  "license": "MIT",
+  "bin": {
+    "tsb": "bin/cli.js"
+  },
+  "main": "dist/main.js",
+  "typings": "dist/main.d.ts",
+  "scripts": {
+    "integration": "node --inspect-brk ./integration/run.js",
+    "lint": "tslint -p tsconfig.json --type-check",
+    "debug": "node --inspect-brk ./debug-ts.js",
+    "build": "tsc --target es5 --declaration true"
+  },
+  "peerDependencies": {
+    "typescript": ">= 1.8.0 < 3"
+  },
+  "dependencies": {
+    "@angular/compiler": "^4.3.5",
+    "@angular/compiler-cli": "^4.3.5",
+    "clean-css": "^4.1.7",
+    "glob": "^7.1.2",
+    "html-minifier": "^3.5.3",
+    "less": "^2.7.2",
+    "node-sass": "^4.5.3",
+    "rollup": "^0.47.6",
+    "rollup-plugin-absolute-module-fix": "^0.0.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "vinyl": "^2.1.0",
+    "yargs": "^8.0.2"
+  },
+  "devDependencies": {
+    "@angular/common": "^4.3.5",
+    "@angular/core": "^4.3.5",
+    "@angular/http": "^4.3.5",
+    "@angular/platform-browser": "^4.3.5",
+    "@types/glob": "^5.0.31",
+    "@types/html-minifier": "^1.1.30",
+    "@types/less": "^0.0.32",
+    "@types/lodash": "^4.14.73",
+    "@types/node": "^8.0.24",
+    "@types/node-sass": "^3.10.32",
+    "@types/rollup": "^0.41.1",
+    "@types/vinyl": "^2.0.0",
+    "angular2-jwt": "^0.2.3",
+    "lodash": "^4.17.4",
+    "rxjs": "^5.4.3",
+    "source-map-support": "^0.4.16",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.6.0",
+    "typescript": "^2.4.2",
+    "zone.js": "^0.8.16"
+  }
+}

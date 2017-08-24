@@ -1,0 +1,8 @@
+# Source
+test/
+src/
+
+# Configs
+tsconfig*
+tslint*
+yarn*

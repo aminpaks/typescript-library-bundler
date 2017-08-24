@@ -1,0 +1,12 @@
+{
+    "name": "angular-lib-1",
+    "private": true,
+    "version": "0.0.1",
+    "main": "./dist/bundles/angular-lib-1.umd.js",
+    "module": "./dist/angular-lib-1.es5.js",
+    "es2015": "./dist/angular-lib-1.js",
+    "typings": "./dist/angular-lib-1.d.ts",
+    "license": "MIT",
+    "devDependencies": {
+    }
+  }

@@ -1,0 +1,19 @@
+$variable: 'solid';
+
+:host {
+  border: 1px $variable black;
+
+  h2 {
+    font-size: 2em;
+  }
+
+  .check-class {
+    .check-nested-class {
+      display: table;
+    }
+
+    &-rule {
+      transform: rotate(200deg);
+    }
+  }
+}
