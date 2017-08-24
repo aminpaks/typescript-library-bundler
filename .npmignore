@@ -1,8 +1,13 @@
 # Source
+@types/
+integration/
 test/
 src/
 
+debug-ts.js
+
 # Configs
+.*
 tsconfig*
 tslint*
 yarn*
