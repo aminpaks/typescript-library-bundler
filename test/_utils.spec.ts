@@ -60,13 +60,13 @@ describe('utils', () => {
   });
 
   it('isFile', () => {
-    assert.equal(isFile(path.resolve(__dirname, 'tests.js')), true);
+    assert.equal(isFile(path.resolve(__dirname, 'file.spec.js')), true);
     assert.equal(isFile(path.resolve(__dirname)), false);
   });
 
   it('isDirectory', () => {
     assert.equal(isDirectory(path.resolve(__dirname)), true);
-    assert.equal(isDirectory(path.resolve(__dirname, 'tests.js')), false);
+    assert.equal(isDirectory(path.resolve(__dirname, 'file.spec.js')), false);
   });
 
   const emptyDir = path.resolve(__dirname, 'empty-dir');
