@@ -1,6 +1,7 @@
 # Source
 @types/
 integration/
+build/
 test/
 src/
 

@@ -4,7 +4,11 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "strictNullChecks": true,
     "outDir": "./dist",
     "baseUrl": ".",
@@ -17,10 +21,13 @@
     ]
   },
   "include": [
-    "src"
+    "@types",
+    "src",
+    "test"
   ],
   "exclude": [
     "node_modules",
-    "integration"
+    "integration",
+    "test"
   ]
 }

@@ -8,10 +8,20 @@
   "main": "dist/main.js",
   "typings": "dist/main.d.ts",
   "scripts": {
+    "clean": "npm-run-all -p clean:*",
+    "clean:dist": "rimraf dist",
+    "clean:build": "rimraf build",
+    "compile": "npm-run-all -p compile:*",
+    "compile:lib": "tsc --target es5 --declaration true",
+    "compile:test": "tsc -p test",
     "integration": "node --inspect-brk ./integration/run.js",
-    "lint": "tslint -p tsconfig.json --type-check",
+    "lint": "npm-run-all -p lint:*",
+    "lint:lib": "tslint -p tsconfig.json --type-check",
+    "lint:test": "tslint -p test --type-check",
     "debug": "node --inspect-brk ./debug-ts.js",
-    "build": "tsc --target es5 --declaration true"
+    "test": "npm-run-all test:*",
+    "test:lib": "mocha --reporter spec --colors \"build/test/**/*.spec.js\"",
+    "verify": "npm-run-all lint clean compile test"
   },
   "keywords": [
     "typescript",
@@ -33,6 +43,8 @@
   "dependencies": {
     "@angular/compiler": "^4.3.5",
     "@angular/compiler-cli": "^4.3.5",
+    "@types/chai": "^4.0.4",
+    "chai": "^4.1.1",
     "clean-css": "^4.1.7",
     "glob": "^7.1.2",
     "html-minifier": "^3.5.3",
@@ -42,7 +54,6 @@
     "rollup-plugin-absolute-module-fix": "^0.0.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
-    "vinyl": "^2.1.0",
     "yargs": "^8.0.2"
   },
   "devDependencies": {
@@ -54,12 +65,15 @@
     "@types/html-minifier": "^1.1.30",
     "@types/less": "^0.0.32",
     "@types/lodash": "^4.14.73",
+    "@types/mocha": "^2.2.42",
     "@types/node": "^8.0.24",
     "@types/node-sass": "^3.10.32",
     "@types/rollup": "^0.41.1",
-    "@types/vinyl": "^2.0.0",
     "angular2-jwt": "^0.2.3",
     "lodash": "^4.17.4",
+    "mocha": "^3.5.0",
+    "npm-run-all": "^4.0.2",
+    "rimraf": "^2.6.1",
     "rxjs": "^5.4.3",
     "source-map-support": "^0.4.16",
     "ts-node": "^3.3.0",
