@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/typescript-library-bundler.svg)](https://badge.fury.io/js/typescript-library-bundler)
 [![downloads](https://img.shields.io/npm/dm/typescript-library-bundler.svg)](https://npmjs.org/package/typescript-library-bundler)
-[![CircleCI](https://circleci.com/gh/aminpaks/typescript-library-bundler/tree/master.svg?style=shield)](https://circleci.com/gh/aminpaks/typescript-library-bundler/tree/master)
+[![circle-ci](https://circleci.com/gh/aminpaks/typescript-library-bundler/tree/master.svg?style=shield&circle-token=fb6b66aca044ec66bb079fe4d3e5f1ce17109c83)](https://circleci.com/gh/aminpaks/typescript-library-bundler/tree/master)
 
 ## Typescript Library Bundler
 
@@ -25,7 +25,7 @@ Typescript Library Bundler works out of box without setting anything up. You jus
 
 ```json
 {
-  ...
+  // ...
   "files": [
     "./src/public_api.ts"
   ]
@@ -38,10 +38,10 @@ And you're ready to go, just run it either from your package scripts:
 
 ```json
 {
-  ...
+  // ...
   "scripts": {
     "build": "tsb"
-  },
+  }
 }
 ```
 and run it from shell:
