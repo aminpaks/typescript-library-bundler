@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as less from 'less';
-import { isEmpty, isNil } from '../utils';
+import { isNil } from '../utils';
 
 export function replaceModulesPath(content: string, currentDir: string, projectRootDir: string): string {
   const importRE = /(@import\s*(\([^\)]+\)\s*)?(?:['"])(~))\w/gi;

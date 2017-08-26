@@ -6,7 +6,6 @@
 
 import * as path from 'path';
 import * as uglify from 'rollup-plugin-uglify';
-import { ScriptTarget } from 'typescript';
 import { main as ngcCompiler } from '@angular/tsc-wrapped';
 
 import { preprocessTSFiles } from './preprocess-files';
@@ -19,7 +18,6 @@ import {
   ensureRemoveDir,
   isArray,
   isNil,
-  readFile,
 } from './utils';
 
 

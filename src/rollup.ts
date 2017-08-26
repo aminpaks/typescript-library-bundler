@@ -1,10 +1,8 @@
-import * as path from 'path';
-import * as uglify from 'rollup-plugin-uglify';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as absModuleFix from 'rollup-plugin-absolute-module-fix';
 import { isNil } from './utils';
 import { GlobalModules } from './rollup-globals';
-import { Format, Options, Plugin, rollup, Warning, WriteOptions } from 'rollup';
+import { Format, Options, Plugin, rollup, WriteOptions } from 'rollup';
 
 export type RollupCustomOptions = Options & WriteOptions;
 export interface CustomGlobals {

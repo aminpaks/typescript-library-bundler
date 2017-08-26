@@ -1,11 +1,9 @@
 import * as path from 'path';
 import {
   ModuleKind,
-  ScriptKind,
   ScriptTarget,
   transpileModule as tscTranspile,
   TranspileOptions,
-  TranspileOutput,
 } from 'typescript';
 import {
   isNil,

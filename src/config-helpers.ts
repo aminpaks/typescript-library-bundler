@@ -1,9 +1,9 @@
 import * as path from 'path';
 import { NodePackage, TSConfigs } from './types';
 import { isNil, mergeInto, readFile, writeFile } from './utils';
-import { CompilerOptions, convertCompilerOptionsFromJson, Diagnostic, readConfigFile } from 'typescript';
+import { Diagnostic, readConfigFile } from 'typescript';
 
-export function parseConfigFile(filePath: string, basePath?: string): {
+export function parseConfigFile(filePath: string, _basePath?: string): {
   configs: TSConfigs;
   error: Diagnostic | undefined;
 } {

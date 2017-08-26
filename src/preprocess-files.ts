@@ -1,16 +1,5 @@
 import * as path from 'path';
-import * as vinyl from 'vinyl';
 import { FileHandler } from './file';
-import {
-  ensureMakeDir,
-  isArray,
-  isDirectory,
-  isEmpty,
-  isFile,
-  isNil,
-  readFile,
-  writeFile,
-} from './utils';
 
 import { InlineStyles } from './plugins/inline-styles';
 import { InlineTemplate } from './plugins/inline-template';
@@ -20,7 +9,6 @@ export interface HandlerPlugin {
 }
 
 export async function preprocessTSFiles(entryFilePath: string, destDir: string, baseDir?: string): Promise<string[]> {
-  const fileList: string[] = [];
   const allFiles = await getFiles(entryFilePath, []);
 
   const plugins = [InlineTemplate, InlineStyles];
@@ -47,7 +35,7 @@ export async function preprocessTSFiles(entryFilePath: string, destDir: string, 
   return copiedFiles;
 }
 
-async function getFiles(entryFilePath: string, excludeList: string[]): Promise<FileHandler[]> {
+async function getFiles(entryFilePath: string, _excludeList: string[]): Promise<FileHandler[]> {
   const entryFile = new FileHandler(entryFilePath);
   const excludeFromList: string[] = [entryFilePath];
   return [entryFile, ...await entryFile.getImportees(excludeFromList)];
