@@ -1,3 +1,7 @@
+[![npm version](https://badge.fury.io/js/typescript-library-bundler.svg)](https://badge.fury.io/js/typescript-library-bundler)
+[![downloads](https://img.shields.io/npm/dm/typescript-library-bundler.svg)](https://npmjs.org/package/typescript-library-bundler)
+[![CircleCI](https://circleci.com/gh/aminpaks/typescript-library-bundler/tree/master.svg?style=shield)](https://circleci.com/gh/aminpaks/typescript-library-bundler/tree/master)
+
 ## Typescript Library Bundler
 
 With help of this library you can bundle your typescript library and make it ready to ship with ES5 or any other version of ECMAScript.
