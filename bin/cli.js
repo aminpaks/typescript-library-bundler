@@ -5,20 +5,26 @@
  * License: MIT
  */
 const path = require('path');
-const argv = require('yargs').argv;
+const ms = require('minimist-string');
 const ngPkgr = require('../dist/');
 
 if (require && require.main) {
-  const project = argv.project || argv.p || process.cwd();
+  const args = ms(process.argv.slice(0).pop());
+  const project = args.project || args.p || process.cwd();
 
-  let projectPath = path.resolve(project.replace(/['"]/g, ''));
+  let projectPath = project.replace(/['"]/g, '');
   let projectConfigPath = '';
+  if (!path.isAbsolute(project)) {
+    projectPath = path.resolve(process.cwd(), projectPath);
+  }
 
   if (ngPkgr.isFile(projectPath)) {
-    projectConfigPath = projectPath;
+    projectConfigPath = path.resolve(projectPath);
     projectPath = path.dirname(project);
   } else if (ngPkgr.isDirectory(projectPath)) {
-    projectConfigPath = path.resolve('tsconfig.json');
+    projectConfigPath = path.resolve(projectPath, 'tsconfig.json');
+  } else {
+    throw new Error('A valid path is required to project directory or tsconfig!');
   }
 
   ngPkgr

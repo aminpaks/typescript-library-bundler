@@ -11,7 +11,7 @@ import { main as ngcCompiler } from '@angular/tsc-wrapped';
 import { preprocessTSFiles } from './preprocess-files';
 import { getTranspileOptions, transpileModule } from './tsc';
 import { defaultConfigs as rollupConfig, rollupBy } from './rollup';
-import { createNGCConfig, parseConfigFile, readPackage, validatePkgModuleEntries } from './config-helpers';
+import { createNGCConfig, getSafePackageName, parseConfigFile, readPackage, validatePkgModuleEntries } from './config-helpers';
 import {
   copyFromTo,
   ensureMakeDir,
@@ -53,8 +53,12 @@ export async function main(projectPath: string, configFilePath?: string): Promis
 
   const packageConfigs = readPackage(packageFilePath);
   const { name: packageName } = packageConfigs;
-  const moduleFilename = packageName + '.js';
+  const moduleId = getSafePackageName(packageName);
+  const moduleFilename = moduleId + '.js';
 
+  if (isNil(moduleId)) {
+    throw new Error(`Package name includes invalid characters "${packageName}"!`); // `
+  }
 
   if (isNil(packageName)) {
     throw new Error('Project package.json has no name entry!');
@@ -75,21 +79,21 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   // AngularCompiler configurations
   const ngcBuildDir = path.resolve(buildDir, 'ngc-compiled');
   const ngcConfigPath = path.resolve(buildDir, 'tsconfig-ngc.json');
-  createNGCConfig(ngcConfigPath, packageName, configs);
+  createNGCConfig(ngcConfigPath, moduleId, configs);
 
   // Compile with NGC
   await ngcCompiler(ngcConfigPath, { basePath: buildDir });
 
   const { bundlerOptions = {} } = configs as any;
   const { externals = {} } = bundlerOptions as any;
-  const outputES5Module = path.resolve(destDir, moduleFilename.replace(/\.js$/i, '.es5.js'));
+  const outputES5Module = path.resolve(destDir, moduleId + '.es5.js');
   const outputES6Module = path.resolve(destDir, moduleFilename);
 
   // Bundle for ES6
   const rollupEntryFile = path.resolve(ngcBuildDir, moduleFilename);
   const rollupES2015Config = rollupConfig({
     moduleEntry: rollupEntryFile,
-    moduleName: packageName,
+    moduleName: moduleId,
     outputPath: outputES6Module,
     customGlobals: externals,
   });
@@ -98,8 +102,8 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   // Transpile ES6 into ES5
   const transpileConfigES5 = getTranspileOptions({
     compilerOptions: { allowJs: true },
-    moduleName: packageName,
-    fileName: packageName,
+    moduleName: moduleId,
+    fileName: moduleId,
   });
   await transpileModule(outputES6Module, transpileConfigES5, outputES5Module);
 
@@ -107,18 +111,18 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   const bundlesDir = path.resolve(destDir, 'bundles');
 
   // Bundle for UMD
-  const outputUMDModule = path.resolve(bundlesDir, moduleFilename.replace(/\.js$/, '.umd.js'));
+  const outputUMDModule = path.resolve(bundlesDir, moduleId + '.umd.js');
   const rollupUMDConfig = rollupConfig({
     format: 'umd',
     moduleEntry: outputES5Module,
-    moduleName: packageName,
+    moduleName: moduleId,
     outputPath: outputUMDModule,
     customGlobals: externals,
   });
   await rollupBy(rollupUMDConfig);
 
   // Bundle for minified UMD
-  const outputMinifiedUMDModule = path.resolve(bundlesDir, moduleFilename.replace(/\.js$/, '.umd.min.js'));
+  const outputMinifiedUMDModule = path.resolve(bundlesDir, moduleId + '.umd.min.js');
   const rollupMinifiedUMDConfig = rollupConfig({
     format: 'umd',
     moduleEntry: outputES5Module,
@@ -137,7 +141,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   });
 
   // Validation of distribution files in package.json
-  const outputTypings = path.resolve(destDir, moduleFilename.replace(/\.js$/, '.d.ts'));
+  const outputTypings = path.resolve(destDir, moduleId + '.d.ts');
   validatePkgModuleEntries({
     pkgMain: outputUMDModule,
     pkgModule: outputES5Module,

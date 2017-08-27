@@ -15,6 +15,14 @@ export function parseConfigFile(filePath: string, _basePath?: string): {
   };
 }
 
+export function getSafePackageName(name: string): string | undefined {
+  if (/^(?:[a-z][a-z0-9._-]+?|@[^\/]*\/\b)+$/.test(name) === false) {
+    return undefined;
+  }
+
+  return name.replace(/[^\w-]/g, '-').replace(/^-+/, '');
+}
+
 export function createNGCConfig(filePath: string, moduleId: string, configs?: TSConfigs): void {
   const result = mergeInto(<TSConfigs>{
     compilerOptions: {
