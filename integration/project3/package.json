@@ -1,0 +1,10 @@
+{
+  "name": "@ng-lib/directive",
+  "private": true,
+  "version": "1.0.0",
+  "main": "dist/bundles/ng_lib_directive.umd.js",
+  "module": "dist/ng_lib_directive.es5.js",
+  "es2015": "dist/ng_lib_directive.js",
+  "typings": "dist/ng_lib_directive.d.ts",
+  "license": "MIT"
+}
