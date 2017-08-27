@@ -25,7 +25,6 @@ Typescript Library Bundler works out of box without setting anything up. You jus
 
 ```json
 {
-  // ...
   "files": [
     "./src/public_api.ts"
   ]
@@ -38,7 +37,6 @@ And you're ready to go, just run it either from your package scripts:
 
 ```json
 {
-  // ...
   "scripts": {
     "build": "tsb"
   }
@@ -48,6 +46,21 @@ and run it from shell:
 ```sh
 $ npm run build
 ```
+or simply by executing it from bin folder of your project:
+```sh
+$ ./node_modules/.bin/tsb --project ./
+```
 
 ## CLI Parameters
-The cli tool can receive your project tsconfig by passing it as an argument with `-p` as `tsc -p tsconfig-build.json`.
+The cli tool can receive your project path or its tsconfig by passing it as an argument of `p` or `project` as `tsb -p ./tsconfig-build.json` or `tsb --project ../`
+
+
+## Contributes
+To debug follow these steps:
+1. Clone the project `git clone https://github.com/aminpaks/typescript-library-bundler`
+2. Install dependencies `cd typescript-library-bundler && yarn install`
+4. Run debugger from debug section of vscode `Debug integration`
+
+To verify & build:
+1. Run `yarn run verify`
+2. Run `yarn run build`

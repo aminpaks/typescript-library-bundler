@@ -7,40 +7,21 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${file}"
-    },
-    {
-      "type": "node",
-      "request": "launch",
       "name": "Debug integration",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run-script",
-        "integration"
-      ],
-      "port": 9229,
-      "stopOnEntry": false,
+      "program": "${workspaceRoot}/integration/run.js",
       "cwd": "${workspaceRoot}",
       "protocol": "inspector"
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug main",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run-script",
-        "debug"
-      ],
+      "name": "Debug CLI",
+      "program": "${workspaceRoot}/bin/cli.js",
       "args": [
-        "--",
-        "--entry='test/run.ts'"
+        "--project ./integration/project3"
       ],
-      "port": 9229,
       "stopOnEntry": false,
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
+      "cwd": "${workspaceRoot}"
     },
     {
       "type": "node",
@@ -67,10 +48,10 @@
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "stopOnEntry": false,
       "args": [
-        // "--reporter",
-        // "spec",
-        // "--colors",
-        // "--no-timeouts",
+        "--reporter",
+        "spec",
+        "--colors",
+        "--no-timeouts",
         "build/test/**/*.spec.js"
       ],
       "cwd": "${workspaceRoot}",

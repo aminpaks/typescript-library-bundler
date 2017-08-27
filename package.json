@@ -1,6 +1,6 @@
 {
   "name": "typescript-library-bundler",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "bin": {
     "tsb": "bin/cli.js"
@@ -14,14 +14,15 @@
     "compile": "npm-run-all -p compile:*",
     "compile:lib": "tsc --target es5 --declaration true",
     "compile:test": "tsc -p test",
-    "integration": "node --inspect-brk ./integration/run.js",
+    "integration": "node integration/run.js",
     "lint": "npm-run-all -p lint:*",
     "lint:lib": "tslint -p tsconfig.json --type-check",
     "lint:test": "tslint -p test --type-check",
     "debug": "node --inspect-brk ./debug-ts.js",
     "test": "npm-run-all test:*",
     "test:lib": "mocha --reporter spec --colors \"build/test/**/*.spec.js\"",
-    "verify": "npm-run-all lint clean compile test"
+    "verify": "npm-run-all lint clean compile test",
+    "build": "npm-run-all clean compile:lib"
   },
   "keywords": [
     "typescript",
@@ -53,8 +54,7 @@
     "rollup": "^0.47.6",
     "rollup-plugin-absolute-module-fix": "^0.0.1",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^2.0.1",
-    "yargs": "^8.0.2"
+    "rollup-plugin-uglify": "^2.0.1"
   },
   "devDependencies": {
     "@angular/common": "^4.3.5",
@@ -71,6 +71,7 @@
     "@types/rollup": "^0.41.1",
     "angular2-jwt": "^0.2.3",
     "lodash": "^4.17.4",
+    "minimist-string": "^1.0.2",
     "mocha": "^3.5.0",
     "npm-run-all": "^4.0.2",
     "rimraf": "^2.6.1",
