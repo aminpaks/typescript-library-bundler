@@ -18,7 +18,8 @@
       "name": "Debug CLI",
       "program": "${workspaceRoot}/bin/cli.js",
       "args": [
-        "--project ./integration/project3"
+        "--project",
+        "./integration/project4"
       ],
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}"

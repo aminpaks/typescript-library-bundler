@@ -1,6 +1,6 @@
 {
   "name": "typescript-library-bundler",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "bin": {
     "tsb": "bin/cli.js"

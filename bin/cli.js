@@ -9,7 +9,7 @@ const ms = require('minimist-string');
 const ngPkgr = require('../dist/');
 
 if (require && require.main) {
-  const args = ms(process.argv.slice(0).pop());
+  const args = ms(process.argv.slice(2).join(' '));
   const project = args.project || args.p || process.cwd();
 
   let projectPath = project.replace(/['"]/g, '');
