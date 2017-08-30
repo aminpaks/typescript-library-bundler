@@ -1,6 +1,7 @@
 {
   "name": "typescript-library-bundler",
-  "version": "0.0.7",
+  "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5 and CommonJS",
+  "version": "0.0.8",
   "license": "MIT",
   "bin": {
     "tsb": "bin/cli.js"
@@ -12,7 +13,7 @@
     "clean:dist": "rimraf dist",
     "clean:build": "rimraf build",
     "compile": "npm-run-all -p compile:*",
-    "compile:lib": "tsc --target es5 --declaration true",
+    "compile:lib": "tsc --target es2015 --declaration true",
     "compile:test": "tsc -p test",
     "integration": "node integration/run.js",
     "lint": "npm-run-all -p lint:*",
@@ -44,8 +45,6 @@
   "dependencies": {
     "@angular/compiler": "^4.3.5",
     "@angular/compiler-cli": "^4.3.5",
-    "@types/chai": "^4.0.4",
-    "chai": "^4.1.1",
     "clean-css": "^4.1.7",
     "glob": "^7.1.2",
     "html-minifier": "^3.5.3",
@@ -62,6 +61,7 @@
     "@angular/core": "^4.3.5",
     "@angular/http": "^4.3.5",
     "@angular/platform-browser": "^4.3.5",
+    "@types/chai": "^4.0.4",
     "@types/glob": "^5.0.31",
     "@types/html-minifier": "^1.1.30",
     "@types/less": "^0.0.32",
@@ -71,6 +71,7 @@
     "@types/node-sass": "^3.10.32",
     "@types/rollup": "^0.41.1",
     "angular2-jwt": "^0.2.3",
+    "chai": "^4.1.1",
     "lodash": "^4.17.4",
     "mocha": "^3.5.0",
     "npm-run-all": "^4.0.2",
