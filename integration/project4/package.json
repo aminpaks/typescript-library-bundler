@@ -1,0 +1,10 @@
+{
+  "name": "@ng-lib/test",
+  "private": true,
+  "version": "1.0.0",
+  "main": "build/bundles/ng-lib-test.umd.js",
+  "module": "build/ng-lib-test.es5.js",
+  "es2015": "build/ng-lib-test.js",
+  "typings": "build/ng-lib-test.d.ts",
+  "license": "MIT"
+}

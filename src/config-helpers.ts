@@ -1,13 +1,32 @@
 import * as path from 'path';
 import { NodePackage, TSConfigs } from './types';
-import { isNil, mergeInto, readFile, writeFile } from './utils';
+import { isFile, isNil, mergeInto, readFile, writeFile } from './utils';
 import { Diagnostic, readConfigFile } from 'typescript';
 
-export function parseConfigFile(filePath: string, _basePath?: string): {
+export function parseConfigFile(filePath: string): {
   configs: TSConfigs;
   error: Diagnostic | undefined;
 } {
   const result = readConfigFile(filePath, readFile);
+
+  const extendFrom = result.config.extends;
+  if (isNil(result.error) && !isNil(extendFrom)) {
+    const baseConfigPath = path.resolve(path.dirname(filePath), extendFrom);
+
+    if (isFile(baseConfigPath) && baseConfigPath !== filePath) {
+      const baseConfigs = parseConfigFile(baseConfigPath);
+
+      if (isNil(baseConfigs.error)) {
+        delete result.config.extends;
+        const extendedConfigs = mergeInto(result.config, baseConfigs.configs);
+
+        return {
+          configs: extendedConfigs,
+          error: undefined,
+        };
+      }
+    }
+  }
 
   return {
     configs: result.config,
