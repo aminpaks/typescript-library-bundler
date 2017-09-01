@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
- * @license Typescript-Library-Bundler v0.0.1
+ * @license Typescript-Library-Bundler v0.0.8
  * (c) 2017 Amin Paks <amin.pakseresht@hotmail.com>
  * License: MIT
  */
-const path = require('path');
-const ms = require('minimist-string');
-const ngPkgr = require('../dist/');
+import * as path from 'path';
+import * as ms from 'minimist';
+import { main } from './main';
+import { isDirectory, isFile } from './utils';
 
 if (require && require.main) {
-  const args = ms(process.argv.slice(2).join(' '));
+  const args = ms(process.argv.slice(2));
   const project = args.project || args.p || process.cwd();
 
   let projectPath = project.replace(/['"]/g, '');
@@ -18,17 +19,22 @@ if (require && require.main) {
     projectPath = path.resolve(process.cwd(), projectPath);
   }
 
-  if (ngPkgr.isFile(projectPath)) {
+  if (isFile(projectPath)) {
     projectConfigPath = path.resolve(projectPath);
     projectPath = path.dirname(project);
-  } else if (ngPkgr.isDirectory(projectPath)) {
+  } else if (isDirectory(projectPath)) {
     projectConfigPath = path.resolve(projectPath, 'tsconfig.json');
   } else {
     throw new Error('A valid path is required to project directory or tsconfig!');
   }
 
-  ngPkgr
-    .main(projectPath, projectConfigPath)
-    .then(() => console.log('Bundle completed successfully!'))
-    .catch((err) => console.error('Bundle halted!\n' + err));
+  main(projectPath, projectConfigPath)
+    .then(() => {
+      console.log('Bundle completed successfully!');
+      process.exit(1);
+    })
+    .catch((err) => {
+      console.error('Bundle halted!\n' + err);
+      process.exit(0);
+    });
 }
