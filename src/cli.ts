@@ -7,11 +7,15 @@
 import * as path from 'path';
 import * as ms from 'minimist';
 import { main } from './main';
-import { isDirectory, isFile } from './utils';
+import { isDirectory, isFile, isString } from './utils';
 
-if (require && require.main) {
+if (require && require.main === module) {
   const args = ms(process.argv.slice(2));
   const project = args.project || args.p || process.cwd();
+
+  if (!isString(project)) {
+    throw new Error('Project argument is invalid');
+  }
 
   let projectPath = project.replace(/['"]/g, '');
   let projectConfigPath = '';
