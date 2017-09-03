@@ -12,9 +12,5 @@
   },
   "files": [
     "./src/public_api.ts"
-  ],
-  "bundlerOptions": {
-    "externals": {
-    }
-  }
+  ]
 }

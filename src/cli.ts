@@ -35,10 +35,10 @@ if (require && require.main === module) {
   main(projectPath, projectConfigPath)
     .then(() => {
       console.log('Bundle completed successfully!');
-      process.exit(1);
+      process.exit(0);
     })
     .catch((err) => {
       console.error('Bundle halted!\n' + err);
-      process.exit(0);
+      process.exit(1);
     });
 }

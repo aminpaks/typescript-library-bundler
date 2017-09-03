@@ -10,8 +10,8 @@ export function parseConfigFile(filePath: string): {
   const { config, error } = readConfigFile(filePath, readFile);
 
   if (isNil(error)) {
-    if (!isNil(config.extend)) {
-      const { extend: extendFrom } = config;
+    if (!isNil(config.extends)) {
+      const { extends: extendFrom } = config;
       const baseConfigPath = path.resolve(path.dirname(filePath), extendFrom);
 
       if (isFile(baseConfigPath) && baseConfigPath !== filePath) {
