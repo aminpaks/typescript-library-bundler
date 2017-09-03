@@ -1,7 +1,7 @@
 {
   "name": "typescript-library-bundler",
   "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5 and CommonJS",
-  "version": "0.0.9",
+  "version": "0.0.9-beta-2",
   "license": "MIT",
   "bin": {
     "tsb": "dist/cli.js"
@@ -74,6 +74,7 @@
     "@types/rollup": "^0.41.1",
     "angular2-jwt": "^0.2.3",
     "chai": "^4.1.1",
+    "chalk": "^2.1.0",
     "lodash": "^4.17.4",
     "mocha": "^3.5.0",
     "npm-run-all": "^4.0.2",
