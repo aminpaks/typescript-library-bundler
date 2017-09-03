@@ -1,10 +1,10 @@
 {
   "name": "typescript-library-bundler",
   "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5 and CommonJS",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "bin": {
-    "tsb": "bin/cli.js"
+    "tsb": "dist/cli.js"
   },
   "main": "dist/main.js",
   "typings": "dist/main.d.ts",
@@ -20,6 +20,7 @@
     "lint:lib": "tslint -p tsconfig.json --type-check",
     "lint:test": "tslint -p test --type-check",
     "debug": "node --inspect-brk ./debug-ts.js",
+    "debug:cli": "ts-node --inspect-brk ./src/cli.ts",
     "test": "npm-run-all test:*",
     "test:lib": "mocha --reporter spec --colors \"build/test/**/*.spec.js\"",
     "verify": "npm-run-all lint clean compile test",
@@ -49,8 +50,8 @@
     "glob": "^7.1.2",
     "html-minifier": "^3.5.3",
     "less": "^2.7.2",
+    "minimist": "^1.2.0",
     "node-sass": "^4.5.3",
-    "minimist-string": "^1.0.2",
     "rollup": "^0.47.6",
     "rollup-plugin-absolute-module-fix": "^0.0.1",
     "rollup-plugin-node-resolve": "^3.0.0",
@@ -66,6 +67,7 @@
     "@types/html-minifier": "^1.1.30",
     "@types/less": "^0.0.32",
     "@types/lodash": "^4.14.73",
+    "@types/minimist": "^1.2.0",
     "@types/mocha": "^2.2.42",
     "@types/node": "^8.0.24",
     "@types/node-sass": "^3.10.32",

@@ -13,8 +13,8 @@ export function copyFromTo({ pattern, rootDir, toDir, excludes = [] } : {
   rootDir: string;
   toDir: string;
   excludes?: string[];
-}): Promise<boolean> {
-  return new Promise<boolean>((resolve, reject) => {
+}): Promise<string[]> {
+  return new Promise<string[]>((resolve, reject) => {
     glob(pattern, {
       cwd: rootDir,
       nodir: true,
@@ -49,7 +49,10 @@ export function copyFromTo({ pattern, rootDir, toDir, excludes = [] } : {
       Promise.all(results)
         .then((values) => {
           if (values.length === files.length) {
-            resolve(true);
+            resolve(values);
+          } else {
+            const notCopied = files.filter(file => !values.includes(file));
+            reject('Not all files were copied.\n' + notCopied.join('\n'));
           }
         })
         .catch((err_1) => {

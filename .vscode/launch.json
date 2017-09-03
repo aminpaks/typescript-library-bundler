@@ -16,12 +16,20 @@
       "type": "node",
       "request": "launch",
       "name": "Debug CLI",
-      "program": "${workspaceRoot}/bin/cli.js",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run-script",
+        "debug:cli"
+      ],
       "args": [
+        "--",
+        "-p",
+        "./integration/project4",
         "--project",
         "./integration/project4"
       ],
-      "stopOnEntry": false,
+      "port": 9229,
+      "protocol": "inspector",
       "cwd": "${workspaceRoot}"
     },
     {

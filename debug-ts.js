@@ -4,8 +4,9 @@
  * License: MIT
  */
 const path = require('path');
-const argv = require('yargs').argv;
+const minimist = require('minimist');
 
+const argv = minimist(process.argv.splice(2));
 const entry = argv.entry;
 
 if (typeof entry === 'string') {
@@ -18,7 +19,7 @@ if (typeof entry === 'string') {
 
     require('ts-node').register({
       compilerOptions: {
-        target: 'es5',
+        target: 'es2016',
         module: 'commonjs',
         sourceMap: true,
         lib: [

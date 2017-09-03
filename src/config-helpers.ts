@@ -7,30 +7,32 @@ export function parseConfigFile(filePath: string): {
   configs: TSConfigs;
   error: Diagnostic | undefined;
 } {
-  const result = readConfigFile(filePath, readFile);
+  const { config, error } = readConfigFile(filePath, readFile);
 
-  const extendFrom = result.config.extends;
-  if (isNil(result.error) && !isNil(extendFrom)) {
-    const baseConfigPath = path.resolve(path.dirname(filePath), extendFrom);
+  if (isNil(error)) {
+    if (!isNil(config.extend)) {
+      const { extend: extendFrom } = config;
+      const baseConfigPath = path.resolve(path.dirname(filePath), extendFrom);
 
-    if (isFile(baseConfigPath) && baseConfigPath !== filePath) {
-      const baseConfigs = parseConfigFile(baseConfigPath);
+      if (isFile(baseConfigPath) && baseConfigPath !== filePath) {
+        const baseConfigs = parseConfigFile(baseConfigPath);
 
-      if (isNil(baseConfigs.error)) {
-        delete result.config.extends;
-        const extendedConfigs = mergeInto(result.config, baseConfigs.configs);
+        if (isNil(baseConfigs.error)) {
+          delete config.extends;
+          const extendedConfigs = mergeInto(config, baseConfigs.configs);
 
-        return {
-          configs: extendedConfigs,
-          error: undefined,
-        };
+          return {
+            configs: extendedConfigs,
+            error: undefined,
+          };
+        }
       }
     }
   }
 
   return {
-    configs: result.config,
-    error: result.error,
+    configs: config,
+    error,
   };
 }
 
