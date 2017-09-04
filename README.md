@@ -19,36 +19,53 @@ $ yarn add --dev typescript-library-bundler
 ```
 
 ## Usage
-Typescript Library Bundler works out of box without setting anything up. You just need to add your public API entry file into your `tsconfig.json`:
+Typescript Library Bundler works out of box without setting anything up. Follow steps below to achieve this, it will take less that a minute:
+1. Create a new tsconfig for your builds (you may call it anything such as `tsconfig.build.json`)
+2. Add `files` key to this new tsconfig and point to your public api entry file and extend it from the default tsconfig of your project:   
 
-**tsconfig.json** inside of your project
+    **tsconfig.build.json**
+    ```json
+    {
+      "extends": "./tsconfig.json", // Or a relative path to the default configs
+      "files": [
+        "./src/public_api.ts" // Do not call this public API "index.ts"
+      ]
+    }
+    ```
 
+3. Add the `tsb` cli to `package.json` of your project:  
+
+    **package.json**
+    ```json
+    {
+      "name": "a-library",
+      "version": "0.0.2",
+      "scripts": {
+        "build": "tsb -p tsconfig.build.json"
+      }
+    }
+    ```
+4. Run it from shell:
+    ```sh
+    $ npm run build
+    ```
+5. That's it!
+
+## External Libraries (Experimental)
+If you don't want TSB bundles used external libraries in your project you can create a new section in the build tsconfig and define them there. Note in that object key is the library's name and value will be only used for CommonJS to find them globally.
 ```json
 {
+  "extends": "./tsconfig.json",
   "files": [
     "./src/public_api.ts"
-  ]
-}
-```
-
-And you're ready to go, just run it either from your package scripts:
-
-**package.json** inside of your project
-
-```json
-{
-  "scripts": {
-    "build": "tsb"
+  ],
+  "bundlerOptions": {
+    "externals": {
+      "angular2-jwt": "angular2JWT",
+      "lodash": "_"
+    }
   }
 }
-```
-and run it from shell:
-```sh
-$ npm run build
-```
-or simply by executing it from bin folder of your project:
-```sh
-$ ./node_modules/.bin/tsb --project ./
 ```
 
 ## CLI Parameters
