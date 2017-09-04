@@ -10,4 +10,12 @@ require('source-map-support').install();
  * parameter of `getProjects`:
  * utils.getProjects('project4')...
  */
-utils.runProjects(utils.getProjects(), () => console.log('All done!'));
+try {
+  utils.runProjects(utils.getProjects(), () => {
+    console.log('All done!');
+    process.exit(0);
+  });
+} catch (err) {
+  console.log(err);
+  process.exit(1);
+}
