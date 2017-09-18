@@ -19,6 +19,7 @@ export const InlineStyles: HandlerPlugin = async (file: FileHandler): Promise<st
   const StyleUrlsMatchArrayIndex = 2;
   const styleUrlsArrayElementsRE = /([`'"])((?:(?!\1)[\s\S])+)\1/g;
   const StyleUrlsArrayMatchFullIndex = 0;
+  const StyleUrlsArrayMatchQuoteIndex = 1;
   const StyleUrlsArrayMatchFileIndex = 2;
   let content = file.content;
 
@@ -70,8 +71,10 @@ export const InlineStyles: HandlerPlugin = async (file: FileHandler): Promise<st
        * Replace current element of style urls array in styleUrlsArrayReplacements with css styles
        * ['./a-css-file.css'] => ['.css-class{background:blue}']
        */
+      const quote = styleUrlsArrayElementMatch[StyleUrlsArrayMatchQuoteIndex];
       const currentStyleUrlsArrayElementFull = styleUrlsArrayElementMatch[StyleUrlsArrayMatchFullIndex];
-      const currentStyleUrlsArrayElementReplacement = currentStyleUrlsArrayElementFull.replace(styleFilename, styleContent);
+      const currentStyleContentEscaped = styleContent.replace(new RegExp(quote, 'g'), '\\' + quote);
+      const currentStyleUrlsArrayElementReplacement = currentStyleUrlsArrayElementFull.replace(styleFilename, currentStyleContentEscaped);
       styleUrlsArrayReplacements = styleUrlsArrayReplacements.replace(currentStyleUrlsArrayElementFull, currentStyleUrlsArrayElementReplacement);
     }
 
