@@ -26,6 +26,7 @@ export async function renderLess(content: string, currentDir: string, projectRoo
   try {
     const replacedPathsContent = replaceModulesPath(content, currentDir, projectRootDir);
     const lessResult = await less.render(replacedPathsContent, {
+      filename: path.join(currentDir, 'virtual.less'),
       relativeUrls: true,
       ieCompat: false,
     } as Less.Options);
