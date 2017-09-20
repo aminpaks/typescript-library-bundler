@@ -17,7 +17,10 @@ import {
   ensureMakeDir,
   ensureRemoveDir,
   isArray,
+  isEmpty,
+  isFile,
   isNil,
+  isString,
 } from './utils';
 
 
@@ -33,18 +36,31 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     throw new Error(error.messageText.toString());
   }
 
-  const { files, compilerOptions = {} } = configs;
+  let entryFile: string;
+  const { files = [], compilerOptions = {}, bundlerOptions = {} } = configs;
+  const { entry: possibleEntry } = bundlerOptions;
 
-  if (isNil(files)) {
-    throw new Error('Project tsconfig must have files and point to the entry of library!');
+  if (isNil(possibleEntry) && isNil(files)) {
+    throw new Error('Project tsconfig must have an entry barrel file to export the library implementations!');
   }
-  if (!isArray(files) || files.length !== 1) {
-    throw new Error('Project entry file must point to only one file!\n'
-      + 'Current files from tsconfig:\n' + files.join('\n'));
+  if (isString(possibleEntry) && !isEmpty(possibleEntry)) {
+    entryFile = path.resolve(configFileDir, possibleEntry);
+  } else {
+    if (!isArray(files)) {
+      throw new Error('tsconfig "files" property has to be an array');
+
+    } else if (files.length !== 1) {
+      throw new Error('Project entry file must point to only one file!\n'
+        + 'Current "files" property from tsconfig:\n' + files.join('\n'));
+
+    } else {
+      entryFile = path.resolve(configFileDir, [...files].shift());
+    }
   }
 
-  const basePath = configFileDir;
-  const entryFile = path.resolve(basePath, files.slice(0).shift());
+  if (!isFile(entryFile)) {
+    throw new Error('Cannot find the entry file ');
+  }
 
   const packageFilePath = path.resolve(projectPath, 'package.json');
   const buildDir = path.resolve(projectPath, '.compile');
@@ -74,7 +90,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   ensureMakeDir(buildDir);
 
   // Preprocess typescript files
-  await preprocessTSFiles(entryFile, buildDir, basePath);
+  await preprocessTSFiles(entryFile, buildDir, configFileDir);
 
   // AngularCompiler configurations
   const ngcBuildDir = path.resolve(buildDir, 'ngc-compiled');
@@ -84,8 +100,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   // Compile with NGC
   await ngcCompiler(ngcConfigPath, { basePath: buildDir });
 
-  const { bundlerOptions = {} } = configs as any;
-  const { externals = {} } = bundlerOptions as any;
+  const { externals = {} } = bundlerOptions;
   const outputES5Module = path.resolve(destDir, moduleId + '.es5.js');
   const outputES6Module = path.resolve(destDir, moduleFilename);
 

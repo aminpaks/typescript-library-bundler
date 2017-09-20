@@ -85,13 +85,10 @@ export interface TSConfigs {
     debug?: boolean;
     enableLegacyTemplate?: boolean;
   };
-}
-
-export interface VinylFile {
-  cwd: string;
-  base: string;
-  path: string;
-  contents: Buffer;
+  bundlerOptions?: {
+    entry?: string;
+    externals?: { [moduleName: string]: string | any };
+  };
 }
 
 export interface NodePackage {

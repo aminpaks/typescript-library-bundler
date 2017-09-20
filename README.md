@@ -20,16 +20,16 @@ $ yarn add --dev typescript-library-bundler
 
 ## Usage
 Typescript Library Bundler works out of box without setting anything up. Follow steps below to achieve this, it will take less that a minute:
-1. Create a new tsconfig for your builds (you may call it anything such as `tsconfig.build.json`)
-2. Add `files` key to this new tsconfig and point to your public api entry file and extend it from the default tsconfig of your project:   
+1. Create a new tsconfig for your builds (you may call it anything such as `tsconfig.build.json`) or keep your default
+2. Add `bundlerOptions` key to the tsconfig and point to a barrel file that exports the implementation of your library (and extend it if it's not the default tsconfig of your project):   
 
     **tsconfig.build.json**
     ```json
     {
       "extends": "./tsconfig.json", // Or a relative path to the default configs
-      "files": [
-        "./src/public_api.ts" // Do not call this public API "index.ts"
-      ]
+      "bundlerOptions": {
+        "entry": "./src/public_api.ts" // Do not call this barrel file "index.ts"
+      }
     }
     ```
 
@@ -55,11 +55,8 @@ Typescript Library Bundler works out of box without setting anything up. Follow 
 If you don't want TSB bundles used external libraries in your project you can create a new section in the build tsconfig and define them there. Note in that object key is the library's name and value will be only used for CommonJS to find them globally.
 ```json
 {
-  "extends": "./tsconfig.json",
-  "files": [
-    "./src/public_api.ts"
-  ],
   "bundlerOptions": {
+    "entry": "./src/public_api.ts",
     "externals": {
       "angular2-jwt": "angular2JWT",
       "lodash": "_"
@@ -69,8 +66,10 @@ If you don't want TSB bundles used external libraries in your project you can cr
 ```
 
 ## CLI Parameters
-The cli tool can receive your project path or its tsconfig by passing it as an argument of `p` or `project` as `tsb -p ./tsconfig-build.json` or `tsb --project ../`
+The cli tool can receive your project path or its tsconfig by passing it as an argument of `p` or `project` as `tsb -p ./tsconfig-build.json` or `tsb --project ../`. If you don't provide `project` parameter it will try to load the current working directory and look for a `tsconfig.json`.
 
+## Wiki
+Read more information [here](https://github.com/aminpaks/typescript-library-bundler/wiki).
 
 ## Contributes
 To debug follow these steps:

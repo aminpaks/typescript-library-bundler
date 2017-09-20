@@ -76,6 +76,13 @@ export function createNGCConfig(filePath: string, moduleId: string, configs?: TS
   if (!isNil(result.exclude)) {
     delete result.exclude;
   }
+  if (isNil(result.files)) {
+    const { bundlerOptions: { entry = '' } = {} } = result;
+    result.files = [entry];
+  }
+  if (!isNil(result.bundlerOptions)) {
+    delete result.bundlerOptions;
+  }
 
   const resultString = JSON.stringify(result);
 
