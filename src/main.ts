@@ -26,6 +26,10 @@ import {
 
 export async function main(projectPath: string, configFilePath?: string): Promise<void> {
 
+  if (!path.isAbsolute(projectPath)) {
+    projectPath = path.resolve(process.cwd(), projectPath);
+  }
+
   if (isNil(configFilePath)) {
     configFilePath = path.resolve(projectPath, 'tsconfig.json');
   }
