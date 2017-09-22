@@ -51,20 +51,33 @@ Typescript Library Bundler works out of box without setting anything up. Follow 
     ```
 5. That's it!
 
-## External Libraries (Experimental)
-If you don't want TSB bundles used external libraries in your project you can create a new section in the build tsconfig and define them there. Note in that object key is the library's name and value will be only used for CommonJS to find them globally.
-```json
-{
-  "bundlerOptions": {
-    "entry": "./src/public_api.ts",
-    "externals": {
-      "angular2-jwt": "angular2JWT",
-      "lodash": "_"
-    }
-  }
-}
-```
+## Bundler options
+We added a new section `bundlerOptions` in `tsconfig` to prevent creating any conflicts with Typescript compiler or any other tools options. Following options are available:
 
+| Option  | Type | Example | Description |
+| ------- | :--: | :------ | :---------- |
+| entry | `string` | `./src/public_api.ts` | This is how bundler starts looking for modules and implementation of the library. It will go through all the imports/exports of the lib and find these statements.
+| outDir | `string` | `./dist` | A relative path to project path to output the bundle results
+| externals | `object` | `{ lodash: "_" }` | An object to define the external modules that your library is consuming. Refer to External Libraries for more info.
+
+## External Libraries (Experimental and will be changed)
+This happens often that libraries such as lodash are being used to facilitate the process of development. You have two choices to deal with external libraries:
+1. You want to include these libs with your code and ship them all together. In this case you do nothing and let bundler include them automatically
+2. You make them dependencies and they must be imported along with your library once they are being consumed by an app:
+  Create a new section `externals` in `bundlerOptions` and defined them as following example:
+    ```json
+    {
+      "bundlerOptions": {
+        ...
+        "externals": {
+          "angular2-jwt": "angular2JWT",
+          "lodash": "_"
+        }
+      }
+    }
+    ```
+
+ 
 ## CLI Parameters
 The cli tool can receive your project path or its tsconfig by passing it as an argument of `p` or `project` as `tsb -p ./tsconfig-build.json` or `tsb --project ../`. If you don't provide `project` parameter it will try to load the current working directory and look for a `tsconfig.json`.
 
