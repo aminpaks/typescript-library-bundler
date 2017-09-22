@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { isEmpty } from 'lodash';
+import { isEmpty, merge as lodashMerge } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 @Component({
   selector: 'selector',
@@ -10,9 +12,15 @@ import { isEmpty } from 'lodash';
 export class AwesomeComponent implements OnInit {
   constructor() { }
 
+  public obx: Observable<number>;
+
   ngOnInit() {
+
+    this.obx = Observable.of(10);
+
     if (isEmpty([])) {
-      console.log('It is empty!');
+      const originObj = { check: false };
+      console.log('It is empty!', lodashMerge(originObj, { check: true, newKey: 'yes!' }));
     }
   }
 }

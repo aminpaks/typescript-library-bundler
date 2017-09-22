@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * @license Typescript-Library-Bundler v0.0.11
+ * @license Typescript-Library-Bundler v0.0.13
  * (c) 2017 Amin Paks <amin.pakseresht@hotmail.com>
  * License: MIT
  */

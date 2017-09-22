@@ -87,6 +87,7 @@ export interface TSConfigs {
   };
   bundlerOptions?: {
     entry?: string;
+    outDir?: string;
     externals?: { [moduleName: string]: string | any };
   };
 }

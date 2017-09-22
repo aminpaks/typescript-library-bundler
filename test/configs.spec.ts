@@ -13,7 +13,7 @@ describe('ConfigHelpers', () => {
     }).then(() => done());
   });
 
-  const defaultTSConfigPath = path.resolve(__dirname, './tsconfig.build.json');
+  const defaultTSConfigPath = path.resolve(__dirname, './tsconfig.json');
 
   it('createNGCConfig', () => {
 
@@ -28,6 +28,10 @@ describe('ConfigHelpers', () => {
     createNGCConfig(ngcConfigsPath, moduleId, defaultTSConfig);
 
     ({ configs: defaultTSConfig, error  } = parseConfigFile(ngcConfigsPath));
+
+    assert.isDefined(defaultTSConfig, 'files');
+    assert.isArray(defaultTSConfig.files);
+    assert.deepEqual(defaultTSConfig.files, ['./src/public_api.ts']);
 
     assert.isUndefined(error);
     assert.property(defaultTSConfig, 'compilerOptions');
