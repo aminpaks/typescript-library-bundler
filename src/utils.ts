@@ -167,6 +167,12 @@ export function mergeLevelFromTo(from: any, to: any): any {
   return result;
 }
 
+export type uniqueArrayPredicate<T> = (item: T, searchIn: T[]) => boolean;
+
+export function uniqueArray<T>(unique: T[], second: T[], predicate: uniqueArrayPredicate<T> = (item: T, searchIn: T[]) => !searchIn.includes(item)): T[] {
+  return unique.concat(...second.filter(item => predicate(item, unique)));
+}
+
 export function mergeInto<T, U>(origin: T, dest: U): T & U {
   return mergeLevelFromTo(origin, dest);
 }

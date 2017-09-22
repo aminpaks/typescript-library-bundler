@@ -1,16 +1,7 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "outDir": "build",
-    "baseUrl": "."
-  },
-  "files": [
-    "./src/public_api.ts"
-  ],
+  "extends": "./tsconfig.base.json",
   "bundlerOptions": {
-    "externals": {
-      "lodash": "_"
-    }
+    "entry": "./src/public_api.ts",
+    "outDir": "./build"
   }
 }

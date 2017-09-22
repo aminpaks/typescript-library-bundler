@@ -45,7 +45,7 @@ export function defaultConfigs({
     globals: { ...GlobalModules, ...customGlobals },
     onwarn: (warn) => {
       if (warn.code !== 'THIS_IS_UNDEFINED') {
-        console.warn(`Rollup: ${warn.code} -- ${warn.message}`);
+        console.warn(`Warning: Rollup - ${warn.code} -- ${warn.message}`);
       }
     },
     sourceMap: true,

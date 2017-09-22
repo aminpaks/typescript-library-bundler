@@ -1,5 +1,5 @@
 /**
- * @license Typescript-Library-Bundler v0.0.11
+ * @license Typescript-Library-Bundler v0.0.13
  * (c) 2017 Amin Paks <amin.pakseresht@hotmail.com>
  * License: MIT
  */
@@ -41,7 +41,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   }
 
   let entryFile: string;
-  const { files = [], compilerOptions = {}, bundlerOptions = {} } = configs;
+  const { files = [], bundlerOptions = {} } = configs;
   const { entry: possibleEntry } = bundlerOptions;
 
   if (isNil(possibleEntry) && isNil(files)) {
@@ -68,8 +68,8 @@ export async function main(projectPath: string, configFilePath?: string): Promis
 
   const packageFilePath = path.resolve(projectPath, 'package.json');
   const buildDir = path.resolve(projectPath, '.compile');
-  const defaultDestDir = compilerOptions.outDir || 'dist';
-  const destDir = path.resolve(configFileDir, defaultDestDir);
+  const defaultOutDir = bundlerOptions.outDir || './dist';
+  const outDir = path.resolve(projectPath, defaultOutDir);
 
   const packageConfigs = readPackage(packageFilePath);
   const { name: packageName } = packageConfigs;
@@ -90,7 +90,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
 
   // Clean up working directory
   ensureRemoveDir(buildDir);
-  ensureRemoveDir(destDir);
+  ensureRemoveDir(outDir);
   ensureMakeDir(buildDir);
 
   // Preprocess typescript files
@@ -105,8 +105,9 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   await ngcCompiler(ngcConfigPath, { basePath: buildDir });
 
   const { externals = {} } = bundlerOptions;
-  const outputES5Module = path.resolve(destDir, moduleId + '.es5.js');
-  const outputES6Module = path.resolve(destDir, moduleFilename);
+  const externalModules = externals;
+  const outputES5Module = path.resolve(outDir, moduleId + '.es5.js');
+  const outputES6Module = path.resolve(outDir, moduleFilename);
 
   // Bundle for ES6
   const rollupEntryFile = path.resolve(ngcBuildDir, moduleFilename);
@@ -114,7 +115,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: rollupEntryFile,
     moduleName: moduleId,
     outputPath: outputES6Module,
-    customGlobals: externals,
+    customGlobals: externalModules,
   });
   await rollupBy(rollupES2015Config);
 
@@ -127,7 +128,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   await transpileModule(outputES6Module, transpileConfigES5, outputES5Module);
 
   // CommonJS bundles directory
-  const bundlesDir = path.resolve(destDir, 'bundles');
+  const bundlesDir = path.resolve(outDir, 'bundles');
 
   // Bundle for UMD
   const outputUMDModule = path.resolve(bundlesDir, moduleId + '.umd.js');
@@ -136,7 +137,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: outputES5Module,
     moduleName: moduleId,
     outputPath: outputUMDModule,
-    customGlobals: externals,
+    customGlobals: externalModules,
   });
   await rollupBy(rollupUMDConfig);
 
@@ -147,7 +148,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: outputES5Module,
     moduleName: packageName,
     outputPath: outputMinifiedUMDModule,
-    customGlobals: externals,
+    customGlobals: externalModules,
     plugins: [uglify()],
   });
   await rollupBy(rollupMinifiedUMDConfig);
@@ -156,11 +157,11 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   await copyFromTo({
     pattern: '**/*(*.d.ts|*.metadata.json)',
     rootDir: ngcBuildDir,
-    toDir: destDir,
+    toDir: outDir,
   });
 
   // Validation of distribution files in package.json
-  const outputTypings = path.resolve(destDir, moduleId + '.d.ts');
+  const outputTypings = path.resolve(outDir, moduleId + '.d.ts');
   validatePkgModuleEntries({
     pkgMain: outputUMDModule,
     pkgModule: outputES5Module,
