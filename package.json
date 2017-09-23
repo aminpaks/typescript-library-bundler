@@ -1,7 +1,7 @@
 {
   "name": "typescript-library-bundler",
   "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5 and CommonJS",
-  "version": "0.0.13",
+  "version": "0.0.14-beta-1",
   "license": "MIT",
   "bin": {
     "tsb": "dist/cli.js"
@@ -39,9 +39,6 @@
   },
   "bugs": {
     "url": "https://github.com/aminpaks/typescript-library-bundler/issues"
-  },
-  "peerDependencies": {
-    "typescript": ">=1.8.0 <3"
   },
   "dependencies": {
     "@angular/compiler": "^4.3.5",
