@@ -36,7 +36,33 @@ export class FileHandler {
     return validPath;
   }
 
-  private getImporteeNames(): string[] {
+  private getModuleNameFromImportStatement(statement: string): string {
+    const parts = statement.split('/');
+    let moduleName = parts.shift()!;
+
+    if (moduleName.charAt(0) === '@' && parts.length > 0) {
+      moduleName = `${moduleName}/${parts.shift()}`; // `;
+    }
+
+    return moduleName;
+  }
+
+  private async getImporteeFiles(excludeFrom: string[]): Promise<FileHandler[]> {
+    return await this.getImporteeNames()
+      .map((moduleName) => path.resolve(this.dirPath, moduleName))
+      .map((resolvedPath) => this.resolveToFile(resolvedPath))
+      .filter((resolvedFilePath) => isFile(resolvedFilePath))
+      .filter((resolvedFilePath) => (isEmpty(excludeFrom) || excludeFrom.indexOf(resolvedFilePath) < 0))
+      .map(resolvedFilePath => new FileHandler(resolvedFilePath));
+  }
+
+  public getExternalModules(): string[] {
+    return this.getImporteeNames()
+      .map(statement => this.getModuleNameFromImportStatement(statement))
+      .filter(moduleName => moduleName.charAt(0) !== '.');
+  }
+
+  public getImporteeNames(): string[] {
     const allModules: string[] = [];
     const importModuleMatchFileIndex = 2;
     let importModuleMatch: RegExpMatchArray | null;
@@ -57,15 +83,6 @@ export class FileHandler {
     }
 
     return allModules;
-  }
-
-  private async getImporteeFiles(excludeFrom: string[]): Promise<FileHandler[]> {
-    return await this.getImporteeNames()
-      .map((moduleName) => path.resolve(this.dirPath, moduleName))
-      .map((resolvedPath) => this.resolveToFile(resolvedPath))
-      .filter((resolvedFilePath) => isFile(resolvedFilePath))
-      .filter((resolvedFilePath) => (isEmpty(excludeFrom) || excludeFrom.indexOf(resolvedFilePath) < 0))
-      .map(resolvedFilePath => new FileHandler(resolvedFilePath));
   }
 
   public setContent(content: string): void {

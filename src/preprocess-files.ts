@@ -1,6 +1,5 @@
 import * as path from 'path';
 import { FileHandler } from './file';
-
 import { InlineStyles } from './plugins/inline-styles';
 import { InlineTemplate } from './plugins/inline-template';
 
@@ -8,11 +7,10 @@ export interface HandlerPlugin {
   (file: FileHandler): Promise<string>;
 }
 
-export async function preprocessTSFiles(entryFilePath: string, destDir: string, baseDir?: string): Promise<string[]> {
+export async function preprocessTSFiles(entryFilePath: string, destDir: string, baseDir?: string): Promise<FileHandler[]> {
   const allFiles = await getFiles(entryFilePath, []);
 
   const plugins = [InlineTemplate, InlineStyles];
-  const copiedFiles: string[] = [];
 
   for (const file of allFiles) {
     for (const plugin of plugins) {
@@ -28,11 +26,9 @@ export async function preprocessTSFiles(entryFilePath: string, destDir: string, 
     const absDestPath = path.resolve(destDir, destPath);
 
     file.copyTo(absDestPath);
-
-    copiedFiles.push(absDestPath);
   }
 
-  return copiedFiles;
+  return allFiles;
 }
 
 async function getFiles(entryFilePath: string, _excludeList: string[]): Promise<FileHandler[]> {

@@ -9,6 +9,7 @@ import * as uglify from 'rollup-plugin-uglify';
 import { main as ngcCompiler } from '@angular/tsc-wrapped';
 
 import { preprocessTSFiles } from './preprocess-files';
+import { getExternalModuleNames } from './external-modules';
 import { getTranspileOptions, transpileModule } from './tsc';
 import { defaultConfigs as rollupConfig, rollupBy } from './rollup';
 import { createNGCConfig, getSafePackageName, parseConfigFile, readPackage, validatePkgModuleEntries } from './config-helpers';
@@ -94,7 +95,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   ensureMakeDir(buildDir);
 
   // Preprocess typescript files
-  await preprocessTSFiles(entryFile, buildDir, configFileDir);
+  const projectFileList = await preprocessTSFiles(entryFile, buildDir, configFileDir);
 
   // AngularCompiler configurations
   const ngcBuildDir = path.resolve(buildDir, 'ngc-compiled');
@@ -105,7 +106,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   await ngcCompiler(ngcConfigPath, { basePath: buildDir });
 
   const { externals = {} } = bundlerOptions;
-  const externalModules = externals;
+  const externalModules = await getExternalModuleNames(projectFileList, projectPath, externals);
   const outputES5Module = path.resolve(outDir, moduleId + '.es5.js');
   const outputES6Module = path.resolve(outDir, moduleFilename);
 
