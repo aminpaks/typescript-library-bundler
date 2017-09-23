@@ -1,3 +1,4 @@
+import * as commonjs from 'rollup-plugin-commonjs';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as absModuleFix from 'rollup-plugin-absolute-module-fix';
 import { isNil } from './utils';
@@ -17,13 +18,13 @@ export function defaultConfigs({
   customGlobals,
   plugins,
 }: {
-  format?: Format;
-  moduleName: string;
-  moduleEntry: string;
-  outputPath: string;
-  plugins?: Plugin[];
-  customGlobals?: CustomGlobals;
-}): RollupCustomOptions {
+    format?: Format;
+    moduleName: string;
+    moduleEntry: string;
+    outputPath: string;
+    plugins?: Plugin[];
+    customGlobals?: CustomGlobals;
+  }): RollupCustomOptions {
   if (isNil(customGlobals)) {
     customGlobals = {};
   }
@@ -54,6 +55,7 @@ export function defaultConfigs({
         main: true,
         jsnext: true,
       }),
+      commonjs(),
       absModuleFix(),
     ].concat(plugins),
   };

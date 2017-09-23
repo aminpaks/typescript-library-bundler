@@ -146,7 +146,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   const rollupMinifiedUMDConfig = rollupConfig({
     format: 'umd',
     moduleEntry: outputES5Module,
-    moduleName: packageName,
+    moduleName: moduleId,
     outputPath: outputMinifiedUMDModule,
     customGlobals: externalModules,
     plugins: [uglify()],

@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 @Directive({
   selector: '[ng-lib]',
