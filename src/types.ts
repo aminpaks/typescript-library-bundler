@@ -89,10 +89,7 @@ export interface TSConfigs {
     entry?: string;
     outDir?: string;
     externals?: ExternalModules<string>;
-    externalModules?: {
-      autoResolve: boolean;
-      list?: ExternalModules<string | AdvancedExternalModule>;
-    }
+    externalModules?: ExternalModules<string | AdvancedExternalModule> | false;
   };
 }
 

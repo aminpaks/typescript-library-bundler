@@ -12,6 +12,7 @@ import { preprocessTSFiles } from './preprocess-files';
 import { getExternalModuleNames } from './external-modules';
 import { getTranspileOptions, transpileModule } from './tsc';
 import { defaultConfigs as rollupConfig, rollupBy } from './rollup';
+import { ExternalModules } from './types';
 import {
   createNGCConfig,
   getSafePackageName,
@@ -112,8 +113,16 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   // Compile with NGC
   await ngcCompiler(ngcConfigPath, { basePath: buildDir });
 
-  const { externals = {} } = bundlerOptions;
-  const externalModules = await getExternalModuleNames(projectFileList, projectPath, externals);
+  const { externals = {}, externalModules = {} } = bundlerOptions;
+
+  // Initializes with an empty object
+  let libraryExternalModules: ExternalModules<string> = {};
+
+  // Read external module definitions
+  if (externalModules !== false) {
+    libraryExternalModules = await getExternalModuleNames(projectFileList, projectPath, externals || externalModules as ExternalModules<string>);
+  }
+
   const outputES5Module = path.resolve(outDir, moduleId + '.es5.js');
   const outputES6Module = path.resolve(outDir, moduleFilename);
 
@@ -123,7 +132,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: rollupEntryFile,
     moduleName: moduleId,
     outputPath: outputES6Module,
-    customGlobals: externalModules,
+    customGlobals: libraryExternalModules,
   });
   await rollupBy(rollupES2015Config);
 
@@ -145,7 +154,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: outputES5Module,
     moduleName: moduleId,
     outputPath: outputUMDModule,
-    customGlobals: externalModules,
+    customGlobals: libraryExternalModules,
   });
   await rollupBy(rollupUMDConfig);
 
@@ -156,7 +165,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: outputES5Module,
     moduleName: moduleId,
     outputPath: outputMinifiedUMDModule,
-    customGlobals: externalModules,
+    customGlobals: libraryExternalModules,
     plugins: [uglify()],
   });
   await rollupBy(rollupMinifiedUMDConfig);
@@ -169,7 +178,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   });
 
   // Validation of dependencies in package.json
-  validatePkgDependencies(packageConfigs, Object.keys(externalModules));
+  validatePkgDependencies(packageConfigs, Object.keys(libraryExternalModules));
 
   // Validation of distribution files in package.json
   const outputTypings = path.resolve(outDir, moduleId + '.d.ts');

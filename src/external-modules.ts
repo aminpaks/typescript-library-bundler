@@ -1,17 +1,16 @@
 import * as path from 'path';
 import * as camelcase from 'camelcase';
 import { FileHandler } from './file';
+import { ExternalModules } from './types';
 import {
   isDirectory,
   uniqueArray,
 } from './utils';
 
-export interface ExternalModules {
-  [moduleName: string]: string;
-}
+export async function getExternalModuleNames(fileList: FileHandler[], projectPath: string, predefined: ExternalModules<string> = {})
+  : Promise<ExternalModules<string>> {
 
-export async function getExternalModuleNames(fileList: FileHandler[], projectPath: string, predefined: ExternalModules = {}): Promise<ExternalModules> {
-  const externalModuleNames: ExternalModules = {};
+  const externalModuleNames: ExternalModules<string> = {};
   const nodeModulePaths = await resolveNodeModulePaths(projectPath);
 
   const potentialExternalModules = fileList.reduce((allModuleNames, aFile) =>
