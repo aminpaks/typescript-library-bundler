@@ -58,24 +58,36 @@ We added a new section `bundlerOptions` in `tsconfig` to prevent creating any co
 | ------- | :--: | :------ | :---------- |
 | entry | `string` | `./src/public_api.ts` | This is how bundler starts looking for modules and implementation of the library. It will go through all the imports/exports of the lib and find these statements.
 | outDir | `string` | `./dist` | A relative path to project path to output the bundle results
-| externals | `object` | `{ lodash: "_" }` | An object to define the external modules that your library is consuming. Refer to External Libraries for more info.
+| externalModules | `object` or `false` | `{ lodash: "_" }` | An object to define the external modules that your library is consuming. Refer to External Libraries for more info.
 
-## External Libraries (Experimental and will be changed)
-This happens often that libraries such as lodash are being used to facilitate the process of development. You have two choices to deal with external libraries:
-1. You want to include these libs with your code and ship them all together. In this case you do nothing and let bundler include them automatically
-2. You make them dependencies and they must be imported along with your library once they are being consumed by an app:
-  Create a new section `externals` in `bundlerOptions` and defined them as following example:
+## External Libraries (Experimental)
+This happens often that libraries such as lodash or any other node modules are being used to facilitate the process of development. You have two choices to deal with external libraries/modules:
+1. You make these libs/modules dependencies and they must be imported along with your library once they are being consumed by an app. Currently bundler using an algorithm to **automatically** find these external modules inside of your library's source code. And you don't need to do anything, but in case that something went wrong you can define them explicitly for bundler.   
+Create a new section called `externalModules` in `bundlerOptions` and define them manually as following example:
     ```json
     {
       "bundlerOptions": {
         ...
-        "externals": {
+        "externalModules": {
           "angular2-jwt": "angular2JWT",
-          "lodash": "_"
+          "lodash": "_",
         }
       }
     }
     ```
+    **Note:** Since v0.1.0 this is the default behaviour and all imported modules are threated as external.
+
+ 2. You want to include their source with your code and ship them all together.
+  Create a new section called `externalModules` in `bundlerOptions` and set the value to `false` as following example. Bundler will import all these libs/modules and include them all in your library output bundle:
+    ```json
+    {
+      "bundlerOptions": {
+        ...
+        "externalModules": false
+      }
+    }
+    ```
+    **Important note:** This feature won't work well with CommonJs modules.
 
  
 ## CLI Parameters
