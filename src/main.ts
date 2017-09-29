@@ -17,8 +17,8 @@ import {
   getSafePackageName,
   parseConfigFile,
   readPackage,
-  validatePkgModuleEntries,
   validatePkgDependencies,
+  validatePkgModuleEntries,
 } from './config-helpers';
 import {
   copyFromTo,
