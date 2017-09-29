@@ -88,7 +88,11 @@ export interface TSConfigs {
   bundlerOptions?: {
     entry?: string;
     outDir?: string;
-    externals?: { [moduleName: string]: string | any };
+    externals?: ExternalModules<string>;
+    externalModules?: {
+      autoResolve: boolean;
+      list?: ExternalModules<string | AdvancedExternalModule>;
+    }
   };
 }
 
@@ -110,4 +114,13 @@ export interface NodePackage {
   keywords?: string[];
 
   [misc: string]: any;
+}
+
+export interface ExternalModules<T> {
+  [moduleName: string]: T;
+}
+
+export interface AdvancedExternalModule {
+  commonJsName: string;
+  namedExports?: string[];
 }

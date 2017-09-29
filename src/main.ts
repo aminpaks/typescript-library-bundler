@@ -12,7 +12,14 @@ import { preprocessTSFiles } from './preprocess-files';
 import { getExternalModuleNames } from './external-modules';
 import { getTranspileOptions, transpileModule } from './tsc';
 import { defaultConfigs as rollupConfig, rollupBy } from './rollup';
-import { createNGCConfig, getSafePackageName, parseConfigFile, readPackage, validatePkgModuleEntries } from './config-helpers';
+import {
+  createNGCConfig,
+  getSafePackageName,
+  parseConfigFile,
+  readPackage,
+  validatePkgModuleEntries,
+  validatePkgDependencies,
+} from './config-helpers';
 import {
   copyFromTo,
   ensureMakeDir,
@@ -160,6 +167,9 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     rootDir: ngcBuildDir,
     toDir: outDir,
   });
+
+  // Validation of dependencies in package.json
+  validatePkgDependencies(packageConfigs, Object.keys(externalModules));
 
   // Validation of distribution files in package.json
   const outputTypings = path.resolve(outDir, moduleId + '.d.ts');

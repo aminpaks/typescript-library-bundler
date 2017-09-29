@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { NodePackage, TSConfigs } from './types';
-import { isFile, isNil, mergeInto, readFile, writeFile } from './utils';
+import { isEmpty, isFile, isNil, mergeInto, readFile, writeFile } from './utils';
 import { Diagnostic, readConfigFile } from 'typescript';
 
 export function parseConfigFile(filePath: string): {
@@ -135,6 +135,18 @@ export function validatePkgModuleEntries({
   if (!isNil(pkgTypings)) {
     if (isNil(pkg.typings) || !isPkgModuleEntryValid(pkgTypings, pkg.typings, projectPath)) {
       console.warn(`Warning: You must set "typings" property of your package.json to "${pkgTypings.replace(projectPath + path.sep, '')}"`);
+    }
+  }
+}
+
+export function validatePkgDependencies(pkg: NodePackage, externalModules: string[]): void {
+  const { dependencies = {} } = pkg;
+
+  if (!isEmpty(externalModules)) {
+    for (const moduleName of externalModules) {
+      if (isNil(dependencies[moduleName])) {
+        console.warn(`Warning: You must add "${moduleName}" into "dependencies" of your package.json`);
+      }
     }
   }
 }

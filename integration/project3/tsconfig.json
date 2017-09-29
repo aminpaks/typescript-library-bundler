@@ -10,7 +10,7 @@
       "dom"
     ]
   },
-  "files": [
-    "./src/public_api.ts"
-  ]
+  "bundlerOptions": {
+    "entry": "./src/public_api.ts"
+  }
 }

@@ -2,9 +2,13 @@
   "name": "@ng-lib/directive",
   "private": true,
   "version": "1.0.0",
-  "main": "dist/bundles/ng_lib_directive.umd.js",
-  "module": "dist/ng_lib_directive.es5.js",
-  "es2015": "dist/ng_lib_directive.js",
-  "typings": "dist/ng_lib_directive.d.ts",
-  "license": "MIT"
+  "main": "dist/bundles/ng-lib-directive.umd.js",
+  "module": "dist/ng-lib-directive.es5.js",
+  "es2015": "dist/ng-lib-directive.js",
+  "typings": "dist/ng-lib-directive.d.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@angular/core": "~4.4.0",
+    "lodash": "^4.17.0"
+  }
 }
