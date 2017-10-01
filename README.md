@@ -87,7 +87,20 @@ Create a new section called `externalModules` in `bundlerOptions` and define the
       }
     }
     ```
-    **Important note:** This feature won't work well with CommonJs modules.
+    **Important note:** This feature won't work well with CommonJs modules. In case that you faced an error message saying a specific element is not exported by a module you may defined them based on [Rollup CommonJs plugin](https://github.com/rollup/rollup-plugin-commonjs) as following example:
+    ```json
+    {
+      "bundlerOptions": {
+        ...
+        "externalModules": false,
+        "commonJsSettings: {
+          namedExports: {
+            "lodash": ["chain", "merge"]
+          }
+        }
+      }
+    }
+    ```
 
  
 ## CLI Parameters
