@@ -1,4 +1,4 @@
-import { isString } from 'lodash-es';
+import isString from 'lodash-es/isString';
 import { HelperFunctionParams } from './types';
 
 export function helperFunction({ value }: HelperFunctionParams): string {

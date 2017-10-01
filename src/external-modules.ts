@@ -7,10 +7,13 @@ import {
   uniqueArray,
 } from './utils';
 
-export async function getExternalModuleNames(fileList: FileHandler[], projectPath: string, predefined: ExternalModules<string> = {})
-  : Promise<ExternalModules<string>> {
+export interface RollupCommonJsNamedExport {
+  [moduleName: string]: string[];
+}
 
-  const externalModuleNames: ExternalModules<string> = {};
+export async function getExternalModuleNames(fileList: FileHandler[], projectPath: string, predefined: ExternalModules = {}): Promise<ExternalModules> {
+
+  const externalModuleNames: ExternalModules = {};
   const nodeModulePaths = await resolveNodeModulePaths(projectPath);
 
   const potentialExternalModules = fileList.reduce((allModuleNames, aFile) =>
@@ -65,21 +68,13 @@ export async function resolveNodeModulePaths(searchInPath: string): Promise<stri
   return nodeModulePaths;
 }
 
-export function getModuleFromImportStatements(importStatement: string): string {
-  return importStatement;
-}
-
-export function getModuleNamesFromFile(aFile: FileHandler): string[] {
-  return aFile
-    .getImporteeNames()
-    .map(moduleName => getModuleFromImportStatements(moduleName));
-}
-
-export async function getModuleNamesFromFileList(fileList: FileHandler[]): Promise<string[]> {
-  return fileList.reduce((allModuleNames, aFile) =>
-    uniqueArray(allModuleNames, getModuleNamesFromFile(aFile)), []);
-}
-
 export async function isModuleAvailable(moduleName: string, nodeModulePaths: string[]): Promise<boolean> {
   return nodeModulePaths.some(aPath => isDirectory(path.resolve(aPath, moduleName)));
+}
+
+export function isExternalModule(externalModules: ExternalModules, idOrPathToTest: string): boolean {
+  return Object.keys(externalModules).some(moduleName => {
+    const moduleNamePattern = '^' + moduleName.replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&');
+    return (new RegExp(moduleNamePattern)).test(idOrPathToTest);
+  });
 }

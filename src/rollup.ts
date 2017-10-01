@@ -1,61 +1,51 @@
 import * as commonjs from 'rollup-plugin-commonjs';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as absModuleFix from 'rollup-plugin-absolute-module-fix';
-import { isNil } from './utils';
+// import { isArray } from './utils';
+import { ExternalModules } from './types';
 import { GlobalModules } from './rollup-globals';
+import { isExternalModule } from './external-modules';
 import { Format, Options, Plugin, rollup, WriteOptions } from 'rollup';
 
 export type RollupCustomOptions = Options & WriteOptions;
-export interface CustomGlobals {
-  [moduleId: string]: string;
-}
 
 export function defaultConfigs({
-  format,
+  format = 'es',
   moduleName,
   moduleEntry,
   outputPath,
-  customGlobals,
-  plugins,
+  externalModules = {},
+  commonJsSettings = {},
+  plugins = [],
 }: {
     format?: Format;
     moduleName: string;
     moduleEntry: string;
     outputPath: string;
     plugins?: Plugin[];
-    customGlobals?: CustomGlobals;
+    externalModules?: ExternalModules;
+    commonJsSettings?: any;
   }): RollupCustomOptions {
-  if (isNil(customGlobals)) {
-    customGlobals = {};
-  }
-
-  if (isNil(plugins)) {
-    plugins = [];
-  }
-
-  if (isNil(format)) {
-    format = 'es';
-  }
 
   return {
     moduleName,
     format,
     entry: moduleEntry,
     dest: outputPath,
-    external: Object.keys({ ...GlobalModules, ...customGlobals }),
-    globals: { ...GlobalModules, ...customGlobals },
+    external: (id: string) => isExternalModule(externalModules, id),
+    globals: { ...GlobalModules, ...externalModules },
+    sourceMap: true,
     onwarn: (warn) => {
       if (warn.code !== 'THIS_IS_UNDEFINED') {
         console.warn(`Warning: Rollup - ${warn.code} -- ${warn.message}`);
       }
     },
-    sourceMap: true,
     plugins: [
       nodeResolve({
         main: true,
         jsnext: true,
       }),
-      commonjs(),
+      commonjs(commonJsSettings),
       absModuleFix(),
     ].concat(plugins),
   };
