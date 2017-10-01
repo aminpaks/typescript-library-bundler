@@ -75,7 +75,7 @@ Create a new section called `externalModules` in `bundlerOptions` and define the
       }
     }
     ```
-    **Note:** Since v0.1.0 this is the default behaviour and all imported modules are threated as external.
+    **Note:** Since v0.1.0 this is the default behaviour and all imported node modules are treated as external.
 
  2. You want to include their source with your code and ship them all together.
   Create a new section called `externalModules` in `bundlerOptions` and set the value to `false` as following example. Bundler will import all these libs/modules and include them all in your library output bundle:
@@ -93,8 +93,8 @@ Create a new section called `externalModules` in `bundlerOptions` and define the
       "bundlerOptions": {
         ...
         "externalModules": false,
-        "commonJsSettings: {
-          namedExports: {
+        "commonJsSettings": {
+          "namedExports": {
             "lodash": ["chain", "merge"]
           }
         }
