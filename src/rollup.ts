@@ -1,7 +1,6 @@
 import * as commonjs from 'rollup-plugin-commonjs';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as absModuleFix from 'rollup-plugin-absolute-module-fix';
-// import { isArray } from './utils';
 import { ExternalModules } from './types';
 import { GlobalModules } from './rollup-globals';
 import { isExternalModule } from './external-modules';

@@ -4,6 +4,7 @@ import { FileHandler } from './file';
 import { ExternalModules } from './types';
 import {
   isDirectory,
+  isFile,
   uniqueArray,
 } from './utils';
 
@@ -11,7 +12,9 @@ export interface RollupCommonJsNamedExport {
   [moduleName: string]: string[];
 }
 
-export async function getExternalModuleNames(fileList: FileHandler[], projectPath: string, predefined: ExternalModules = {}): Promise<ExternalModules> {
+const { keys } = Object;
+
+export async function getExternalModuleNames(fileList: FileHandler[], projectPath: string, predefined: ExternalModules<string | false> = {}): Promise<ExternalModules> {
 
   const externalModuleNames: ExternalModules = {};
   const nodeModulePaths = await resolveNodeModulePaths(projectPath);
@@ -19,7 +22,8 @@ export async function getExternalModuleNames(fileList: FileHandler[], projectPat
   const potentialExternalModules = fileList.reduce((allModuleNames, aFile) =>
     uniqueArray(allModuleNames, aFile.getExternalModules()), []);
 
-  const uniqueModuleNames = uniqueArray(potentialExternalModules, Object.keys(predefined));
+  const uniqueModuleNames = uniqueArray(potentialExternalModules, keys(predefined))
+    .filter(moduleName => predefined[moduleName] !== false);
 
   for (const moduleName of uniqueModuleNames) {
     if (isModuleAvailable(moduleName, nodeModulePaths)) {
@@ -69,11 +73,11 @@ export async function resolveNodeModulePaths(searchInPath: string): Promise<stri
 }
 
 export async function isModuleAvailable(moduleName: string, nodeModulePaths: string[]): Promise<boolean> {
-  return nodeModulePaths.some(aPath => isDirectory(path.resolve(aPath, moduleName)));
+  return nodeModulePaths.some(aPath => isFile(path.resolve(aPath, moduleName, 'package.json')));
 }
 
 export function isExternalModule(externalModules: ExternalModules, idOrPathToTest: string): boolean {
-  return Object.keys(externalModules).some(moduleName => {
+  return keys(externalModules).some(moduleName => {
     const moduleNamePattern = '^' + moduleName.replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&');
     return (new RegExp(moduleNamePattern)).test(idOrPathToTest);
   });

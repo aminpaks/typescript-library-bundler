@@ -170,7 +170,8 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   });
 
   // Validation of dependencies in package.json
-  validatePkgDependencies(packageConfigs, Object.keys(libraryExternalModules));
+  const { keys } = Object;
+  validatePkgDependencies(packageConfigs, keys(libraryExternalModules));
 
   // Validation of distribution files in package.json
   const outputTypings = path.resolve(outDir, moduleId + '.d.ts');

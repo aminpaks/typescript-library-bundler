@@ -89,7 +89,7 @@ export interface TSConfigs {
     entry?: string;
     outDir?: string;
     externals?: ExternalModules;
-    externalModules?: ExternalModules | false;
+    externalModules?: ExternalModules<string | false> | false;
     commonJsSettings?: any;
   };
 }
@@ -114,6 +114,6 @@ export interface NodePackage {
   [misc: string]: any;
 }
 
-export interface ExternalModules {
-  [moduleName: string]: string;
+export interface ExternalModules<T = string> {
+  [moduleName: string]: T;
 }
