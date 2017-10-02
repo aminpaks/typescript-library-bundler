@@ -70,20 +70,32 @@ Create a new section called `externalModules` in `bundlerOptions` and define the
         ...
         "externalModules": {
           "angular2-jwt": "angular2JWT",
-          "lodash": "_",
+          "lodash": "_"
         }
       }
     }
     ```
-    **Note:** Since v0.1.0 this is the default behaviour and all imported node modules are treated as external.
+    **Note:** Since v0.1.0 this is the default behaviour and all imported node modules are treated as external.  
+    **Info:** The key (for example `lodash`) is the name of module and the value (in this example underscore -> `_`) is the name used to define the module in CommonJS build that will be included only for UMD bundles. 
 
- 2. You want to include their source with your code and ship them all together.
-  Create a new section called `externalModules` in `bundlerOptions` and set the value to `false` as following example. Bundler will import all these libs/modules and include them all in your library output bundle:
+ 2. You want to include their source with your code and ship them all together.   
+  Set `false` to `externalModules` to include all imported node modules. Bundler will import all these libs/modules and include them all in your library output bundle:
     ```json
     {
       "bundlerOptions": {
         ...
         "externalModules": false
+      }
+    }
+    ```
+    Or in case you want to pick set `false` only to those that you want to ship them with your library
+    ```json
+    {
+      "bundlerOptions": {
+        ...
+        "externalModules": {
+          "lodash": false // Only lodash will be included
+        }
       }
     }
     ```
@@ -104,7 +116,8 @@ Create a new section called `externalModules` in `bundlerOptions` and define the
 
  
 ## CLI Parameters
-The cli tool can receive your project path or its tsconfig by passing it as an argument of `p` or `project` as `tsb -p ./tsconfig-build.json` or `tsb --project ../`. If you don't provide `project` parameter it will try to load the current working directory and look for a `tsconfig.json`.
+The cli tool can receive your project path or its tsconfig by passing it as an argument of `p` or `project` as following example `tsb -p ./tsconfig-build.json` or `tsb --project ../`.  
+If you don't provide `project` parameter it will try to load the current working directory and look for a `tsconfig.json`.
 
 ## Wiki
 Read more information [here](https://github.com/aminpaks/typescript-library-bundler/wiki).
