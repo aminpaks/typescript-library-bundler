@@ -140,11 +140,11 @@ export function validatePkgModuleEntries({
 }
 
 export function validatePkgDependencies(pkg: NodePackage, externalModules: string[]): void {
-  const { dependencies = {} } = pkg;
+  const { dependencies = {}, peerDependencies = {} } = pkg;
 
   if (!isEmpty(externalModules)) {
     for (const moduleName of externalModules) {
-      if (isNil(dependencies[moduleName])) {
+      if (isNil(dependencies[moduleName]) && isNil(peerDependencies[moduleName])) {
         console.warn(`Warning: You must add "${moduleName}" into "dependencies" of your package.json`);
       }
     }
