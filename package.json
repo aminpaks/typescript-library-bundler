@@ -13,7 +13,7 @@
     "clean:dist": "rimraf dist",
     "clean:build": "rimraf build",
     "compile": "npm-run-all -p compile:*",
-    "compile:lib": "tsc --target es5 --declaration true",
+    "compile:lib": "tsc --target es5 --declaration true --sourceMap false",
     "compile:test": "tsc -p test",
     "integration": "node integration/run.js",
     "lint": "npm-run-all -p lint:*",
