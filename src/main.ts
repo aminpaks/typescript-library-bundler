@@ -93,14 +93,14 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   const projectFileList = await preprocessTSFiles(entryFile, buildDir, configFileDir);
 
   // Resolve all external modules
-  const { externalModules = {} } = bundlerOptions;
+  const { externals, externalModules = {} } = bundlerOptions;
 
   // Initializes with an empty object
   let libraryExternalModules: ExternalModules = {};
 
   // Read external module definitions
   if (externalModules !== false) {
-    libraryExternalModules = await getExternalModuleNames(projectFileList, projectPath, externalModules);
+    libraryExternalModules = await getExternalModuleNames(projectFileList, projectPath, externals || externalModules);
   }
 
   // AngularCompiler configurations
