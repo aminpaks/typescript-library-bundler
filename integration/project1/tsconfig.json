@@ -16,7 +16,6 @@
   "bundlerOptions": {
     "entry": "./src/public_api.ts",
     "externals": {
-      "angular2-jwt": "angular2-jwt",
       "lodash": "_"
     }
   }
