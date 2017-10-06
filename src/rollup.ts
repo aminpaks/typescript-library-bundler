@@ -3,7 +3,7 @@ import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as absModuleFix from 'rollup-plugin-absolute-module-fix';
 import { ExternalModules } from './types';
 import { GlobalModules } from './rollup-globals';
-import { isExternalModule } from './external-modules';
+import { convertModuleToCommonJs, isExternalModule } from './external-modules';
 import { Format, Options, Plugin, rollup, WriteOptions } from 'rollup';
 
 export type RollupCustomOptions = Options & WriteOptions;
@@ -32,7 +32,7 @@ export function defaultConfigs({
     entry: moduleEntry,
     dest: outputPath,
     external: (id: string) => isExternalModule(externalModules, id),
-    globals: { ...GlobalModules, ...externalModules },
+    globals: <any>((id: string) => GlobalModules[id] || convertModuleToCommonJs(id)),
     sourceMap: true,
     onwarn: (warn) => {
       if (warn.code !== 'THIS_IS_UNDEFINED') {
