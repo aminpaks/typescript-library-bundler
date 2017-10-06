@@ -4,19 +4,19 @@
     "module": "es2015",
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "outDir": "./dist",
     "lib": [
-      "es2015",
+      "es2017",
       "dom"
     ]
   },
-  "include": [
-    "src"
-  ],
   "bundlerOptions": {
     "entry": "./src/public_api.ts",
-    "externals": {
-      "lodash": "_"
+    "outDir": "./build",
+    "externalModules": false,
+    "commonJsSettings": {
+      "namedExports": {
+        "lodash": ["chain"]
+      }
     }
   }
 }

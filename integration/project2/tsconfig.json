@@ -10,11 +10,8 @@
       "dom"
     ]
   },
-  "files": [
-    "./src/public_api.ts"
-  ],
   "bundlerOptions": {
-    "externals": {
-    }
+    "entry": "./src/public_api.ts",
+    "externalModules": false
   }
 }

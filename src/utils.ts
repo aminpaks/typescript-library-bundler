@@ -8,6 +8,8 @@ import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
 
+const { keys } = Object;
+
 export function copyFromTo({ pattern, rootDir, toDir, excludes = [] } : {
   pattern: string;
   rootDir: string;
@@ -100,7 +102,7 @@ export function isEmpty(value: any): boolean {
   } else if (value instanceof Array) {
     return value.length === 0;
   } else if (typeof value === 'object') {
-    return Object.keys(value).length === 0;
+    return keys(value).length === 0;
   } else {
     return true;
   }
@@ -140,7 +142,7 @@ export function ensureRemoveDir(validPath: string): void {
 
 export function mergeLevelFromTo(from: any, to: any): any {
   const result: any = { ...to };
-  for (const key of Object.keys(from)) {
+  for (const key of keys(from)) {
 
     if (isArray(from[key])) {
       const fromArray: any[] = from[key];

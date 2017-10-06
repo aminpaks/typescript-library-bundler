@@ -1,0 +1,10 @@
+{
+  "name": "@coretex/simple",
+  "private": true,
+  "version": "1.0.0",
+  "main": "build/bundles/coretex-simple.umd.js",
+  "module": "build/coretex-simple.es5.js",
+  "es2015": "build/coretex-simple.js",
+  "typings": "build/coretex-simple.d.ts",
+  "license": "MIT"
+}

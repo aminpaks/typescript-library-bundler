@@ -1,7 +1,7 @@
 {
   "name": "typescript-library-bundler",
   "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5 and CommonJS",
-  "version": "0.0.14",
+  "version": "0.1.0-beta-4",
   "license": "MIT",
   "bin": {
     "tsb": "dist/cli.js"
@@ -13,7 +13,7 @@
     "clean:dist": "rimraf dist",
     "clean:build": "rimraf build",
     "compile": "npm-run-all -p compile:*",
-    "compile:lib": "tsc --target es5 --declaration true",
+    "compile:lib": "tsc --target es5 --declaration true --sourceMap false",
     "compile:test": "tsc -p test",
     "integration": "node integration/run.js",
     "lint": "npm-run-all -p lint:*",

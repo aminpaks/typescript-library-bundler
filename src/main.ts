@@ -9,14 +9,22 @@ import * as uglify from 'rollup-plugin-uglify';
 import { main as ngcCompiler } from '@angular/tsc-wrapped';
 
 import { preprocessTSFiles } from './preprocess-files';
+import { getExternalModuleNames } from './external-modules';
 import { getTranspileOptions, transpileModule } from './tsc';
 import { defaultConfigs as rollupConfig, rollupBy } from './rollup';
-import { createNGCConfig, getSafePackageName, parseConfigFile, readPackage, validatePkgModuleEntries } from './config-helpers';
+import { ExternalModules } from './types';
+import {
+  createNGCConfig,
+  getSafePackageName,
+  parseConfigFile,
+  readPackage,
+  validatePkgDependencies,
+  validatePkgModuleEntries,
+} from './config-helpers';
 import {
   copyFromTo,
   ensureMakeDir,
   ensureRemoveDir,
-  isArray,
   isEmpty,
   isFile,
   isNil,
@@ -41,25 +49,13 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   }
 
   let entryFile: string;
-  const { files = [], bundlerOptions = {} } = configs;
+  const { bundlerOptions = {} } = configs;
   const { entry: possibleEntry } = bundlerOptions;
 
-  if (isNil(possibleEntry) && isNil(files)) {
-    throw new Error('Project tsconfig must have an entry barrel file to export the library implementations!');
-  }
   if (isString(possibleEntry) && !isEmpty(possibleEntry)) {
     entryFile = path.resolve(configFileDir, possibleEntry);
   } else {
-    if (!isArray(files)) {
-      throw new Error('tsconfig "files" property has to be an array');
-
-    } else if (files.length !== 1) {
-      throw new Error('Project entry file must point to only one file!\n'
-        + 'Current "files" property from tsconfig:\n' + files.join('\n'));
-
-    } else {
-      entryFile = path.resolve(configFileDir, [...files].shift());
-    }
+    throw new Error('Project tsconfig must have an "entry" that points to the a file to export the library implementations!');
   }
 
   if (!isFile(entryFile)) {
@@ -94,7 +90,18 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   ensureMakeDir(buildDir);
 
   // Preprocess typescript files
-  await preprocessTSFiles(entryFile, buildDir, configFileDir);
+  const projectFileList = await preprocessTSFiles(entryFile, buildDir, configFileDir);
+
+  // Resolve all external modules
+  const { externals, externalModules = {} } = bundlerOptions;
+
+  // Initializes with an empty object
+  let libraryExternalModules: ExternalModules = {};
+
+  // Read external module definitions
+  if (externalModules !== false) {
+    libraryExternalModules = await getExternalModuleNames(projectFileList, projectPath, externals || externalModules);
+  }
 
   // AngularCompiler configurations
   const ngcBuildDir = path.resolve(buildDir, 'ngc-compiled');
@@ -104,8 +111,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   // Compile with NGC
   await ngcCompiler(ngcConfigPath, { basePath: buildDir });
 
-  const { externals = {} } = bundlerOptions;
-  const externalModules = externals;
+  const { commonJsSettings } = bundlerOptions;
   const outputES5Module = path.resolve(outDir, moduleId + '.es5.js');
   const outputES6Module = path.resolve(outDir, moduleFilename);
 
@@ -115,7 +121,8 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: rollupEntryFile,
     moduleName: moduleId,
     outputPath: outputES6Module,
-    customGlobals: externalModules,
+    externalModules: libraryExternalModules,
+    commonJsSettings,
   });
   await rollupBy(rollupES2015Config);
 
@@ -137,7 +144,8 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: outputES5Module,
     moduleName: moduleId,
     outputPath: outputUMDModule,
-    customGlobals: externalModules,
+    externalModules: libraryExternalModules,
+    commonJsSettings,
   });
   await rollupBy(rollupUMDConfig);
 
@@ -148,7 +156,8 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     moduleEntry: outputES5Module,
     moduleName: moduleId,
     outputPath: outputMinifiedUMDModule,
-    customGlobals: externalModules,
+    externalModules: libraryExternalModules,
+    commonJsSettings,
     plugins: [uglify()],
   });
   await rollupBy(rollupMinifiedUMDConfig);
@@ -159,6 +168,10 @@ export async function main(projectPath: string, configFilePath?: string): Promis
     rootDir: ngcBuildDir,
     toDir: outDir,
   });
+
+  // Validation of dependencies in package.json
+  const { keys } = Object;
+  validatePkgDependencies(packageConfigs, keys(libraryExternalModules));
 
   // Validation of distribution files in package.json
   const outputTypings = path.resolve(outDir, moduleId + '.d.ts');
