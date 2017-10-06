@@ -9,6 +9,7 @@ debug-ts.js
 
 # Configs
 .*
+_*
 tsconfig*
 tslint*
 yarn*
