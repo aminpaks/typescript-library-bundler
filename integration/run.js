@@ -1,8 +1,10 @@
 const path = require('path');
 const utils = require('./utils');
+const args = require('minimist')(process.argv.slice(2));
+
+const specificProject = args._.shift();
 
 require('ts-node').register();
-require('source-map-support').install();
 
 /**
  * Run all integration projects
@@ -10,4 +12,4 @@ require('source-map-support').install();
  * parameter of `getProjects`:
  * utils.getProjects('project4')...
  */
-utils.runProjects(utils.getProjects());
+utils.runProjects(utils.getProjects(specificProject));
