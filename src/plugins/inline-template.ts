@@ -37,6 +37,7 @@ export const InlineTemplate: HandlerPlugin = async (file: FileHandler): Promise<
     const minifiedTemplate = minify(templateContent, {
       caseSensitive: true,
       collapseWhitespace: true,
+      removeComments: true,
     }).replace(new RegExp(quote, 'g'), '\\' + quote);
 
     const templateReplacement = match[0].replace(match[4], minifiedTemplate).replace(match[2], 'template');
