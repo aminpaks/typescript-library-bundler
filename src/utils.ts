@@ -178,3 +178,10 @@ export function uniqueArray<T>(unique: T[], second: T[], predicate: uniqueArrayP
 export function mergeInto<T, U>(origin: T, dest: U): T & U {
   return mergeLevelFromTo(origin, dest);
 }
+
+export function removeComments(input: string): string {
+  const removedMultilineComments = input.replace(/\/\*(.|[\r\n])*?\*\//g, '');
+  const removedSingleLineComments = removedMultilineComments.replace(/\/\/.*/gm, '');
+
+  return removedSingleLineComments;
+}

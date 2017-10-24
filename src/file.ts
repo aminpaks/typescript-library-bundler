@@ -6,6 +6,7 @@ import {
   isFile,
   isNil,
   readFile,
+  removeComments,
   writeFile,
 } from './utils';
 
@@ -70,7 +71,7 @@ export class FileHandler {
     // Reset current index to 0
     // RegEx.test moves this into 1
     this.importModuleRE.lastIndex = 0;
-    const content = this.content;
+    const content = removeComments(this.content);
 
     importModuleMatch = this.importModuleRE.exec(content);
     while (!isNil(importModuleMatch)) {
@@ -97,7 +98,7 @@ export class FileHandler {
 
   public hasImporters(): boolean {
     this.importModuleRE.lastIndex = 0;
-    return this.importModuleRE.test(this.content);
+    return this.importModuleRE.test(removeComments(this.content));
   }
 
   public async getImportees(excludeFrom: string[]): Promise<FileHandler[]> {
