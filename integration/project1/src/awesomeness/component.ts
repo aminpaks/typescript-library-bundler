@@ -3,6 +3,12 @@ import { isEmpty, merge as lodashMerge } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
+/**
+ * import * as x from 'yargs';
+ */
+
+// import 'check';
+
 @Component({
   selector: 'selector',
   templateUrl: './component.html',

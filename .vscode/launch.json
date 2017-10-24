@@ -9,6 +9,8 @@
       "request": "launch",
       "name": "Debug integration",
       "program": "${workspaceRoot}/integration/run.js",
+      "args": [
+      ],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector"
     },
