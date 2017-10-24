@@ -12,6 +12,7 @@ import {
   isString,
   mergeInto,
   readFile,
+  removeComments,
   writeFile,
 } from '../src/utils';
 
@@ -95,5 +96,23 @@ describe('utils', () => {
   it('ensureRemoveDir', () => {
     ensureRemoveDir(emptyDir);
     assert.equal(isDirectory(emptyDir), false);
+  });
+
+  it('removeComments', () => {
+    const sampleCode = `
+const x = 100;//Single line comment
+/**
+ * Multiline comment
+ * With a tail */
+alert(/* inline comment */ 'check');
+    `;
+    const sampleCodeWithoutComment = `
+const x = 100;
+
+alert( 'check');
+    `;
+    const removedCommentFromSampleCode = removeComments(sampleCode);
+
+    assert.equal(sampleCodeWithoutComment, removedCommentFromSampleCode);
   });
 });
