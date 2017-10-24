@@ -38,7 +38,8 @@ if (require && require.main === module) {
       process.exit(0);
     })
     .catch((err) => {
-      console.error('Bundle halted!\n' + err);
+      const message = (err.stack || err).toString();
+      console.error('Bundle halted!\n' + message);
       process.exit(1);
     });
 }
