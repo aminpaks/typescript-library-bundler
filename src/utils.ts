@@ -188,7 +188,7 @@ export function removeComments(input: string): string {
 }
 
 export function isAngularLib(externals: ExternalModules): boolean {
-  return keys(externals).some(item => /^@angular/i.test(item) !== null);
+  return keys(externals).some(item => /^@angular/i.test(item));
 }
 
 export function isOfType<T>(_value: any, check: (value: any) => boolean): _value is T {
