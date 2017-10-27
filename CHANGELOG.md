@@ -1,5 +1,10 @@
 # typescript-library-bundler changelog
 
+## 0.1.3
+
+* Fixes some minor issues
+* Forces greater v6.5.0 of node as engine
+
 ## 0.1.2
 
 * Commented import/export statements reports incorrectly ([#7](https://github.com/aminpaks/typescript-library-bundler/pull/7))
