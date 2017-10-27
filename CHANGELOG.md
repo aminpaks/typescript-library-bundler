@@ -1,6 +1,6 @@
 # typescript-library-bundler changelog
 
-## 0.1.3
+## 0.1.4
 
 * Fixes some minor issues
 * Forces greater v6.5.0 of node as engine
