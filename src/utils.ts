@@ -7,6 +7,7 @@
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
+import { ExternalModules } from './types';
 
 const { keys } = Object;
 
@@ -184,4 +185,12 @@ export function removeComments(input: string): string {
   const removedSingleLineComments = removedMultilineComments.replace(/\/\/.*/gm, '');
 
   return removedSingleLineComments;
+}
+
+export function isAngularLib(externals: ExternalModules): boolean {
+  return keys(externals).some(item => /^@angular/i.test(item));
+}
+
+export function isOfType<T>(_value: any, check: (value: any) => boolean): _value is T {
+  return check && check(_value);
 }
