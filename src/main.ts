@@ -25,6 +25,7 @@ import {
   copyFromTo,
   ensureMakeDir,
   ensureRemoveDir,
+  isAngularLib,
   isEmpty,
   isFile,
   isNil,
@@ -163,8 +164,10 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   await rollupBy(rollupMinifiedUMDConfig);
 
   // Copy declarations and metadata files
+  const isAngular = isAngularLib(libraryExternalModules);
+  const copyDeclarationPattern = `**/*(*.d.ts${isAngular ? '|*.metadata.json' : ''})`;
   await copyFromTo({
-    pattern: '**/*(*.d.ts|*.metadata.json)',
+    pattern: copyDeclarationPattern,
     rootDir: ngcBuildDir,
     toDir: outDir,
   });
