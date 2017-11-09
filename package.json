@@ -24,7 +24,8 @@
     "test": "npm-run-all test:*",
     "test:lib": "mocha --reporter spec --colors \"build/test/**/*.spec.js\"",
     "verify": "npm-run-all lint clean compile test",
-    "build": "npm-run-all clean compile:lib"
+    "build": "npm-run-all clean compile:lib",
+    "prepublishOnly": "npm-run-all verify build"
   },
   "keywords": [
     "typescript",
