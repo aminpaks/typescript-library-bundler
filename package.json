@@ -1,10 +1,10 @@
 {
   "name": "typescript-library-bundler",
   "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5 and CommonJS",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "bin": {
-    "tsb": "dist/cli.js"
+    "tsb": "./dist/cli.js"
   },
   "main": "dist/main.js",
   "typings": "dist/main.d.ts",
@@ -88,6 +88,6 @@
     "zone.js": "^0.8.16"
   },
   "engines": {
-    "node" : ">=6.5.0"
+    "node": ">=6.5.0"
   }
 }

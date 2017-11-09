@@ -1,5 +1,9 @@
 # typescript-library-bundler changelog
 
+## 0.1.5
+
+* Fixes small bug in CLI
+
 ## 0.1.4
 
 * Fixes some minor issues
