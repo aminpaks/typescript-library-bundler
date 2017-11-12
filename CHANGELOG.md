@@ -1,5 +1,9 @@
 # typescript-library-bundler changelog
 
+## 0.1.6
+
+* Fixes small bug in merging original tsconfig to compiler configuration ([#9](https://github.com/aminpaks/typescript-library-bundler/issues/9))
+
 ## 0.1.5
 
 * Fixes small bug in CLI

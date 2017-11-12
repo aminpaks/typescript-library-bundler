@@ -4,7 +4,7 @@
 
 ## Typescript Library Bundler
 
-With help of this library you can bundle your typescript library and make it ready to ship with ES5 or any other version of ECMAScript.
+With help of this tool you can bundle your typescript library to javascript and make it ready to ship for ES6, ES5, CommonJS and UMD.
 
 Good news is you can bundle your Angular library as well, it will inline your styles & template automatically. Right now it supports `LESS`, `SCSS` and `CSS` for styles of Angular components.
 

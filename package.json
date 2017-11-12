@@ -1,7 +1,7 @@
 {
   "name": "typescript-library-bundler",
-  "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5 and CommonJS",
-  "version": "0.1.5",
+  "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5, CommonJS and UMD",
+  "version": "0.1.6",
   "license": "MIT",
   "bin": {
     "tsb": "./dist/cli.js"
