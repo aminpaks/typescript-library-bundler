@@ -20,6 +20,9 @@ describe('ConfigHelpers', () => {
     const ngcConfigsPath = path.resolve(__dirname, 'tsconfig.ngc.json');
 
     let { configs: defaultTSConfig, error } = parseConfigFile(defaultTSConfigPath);
+    defaultTSConfig.angularCompilerOptions = {
+      annotateForClosureCompiler: false,
+    };
 
     assert.isUndefined(error);
     assert.property(defaultTSConfig, 'compilerOptions');
@@ -40,6 +43,7 @@ describe('ConfigHelpers', () => {
 
     assert.property(defaultTSConfig, 'angularCompilerOptions');
     assert.propertyVal(defaultTSConfig.angularCompilerOptions, 'flatModuleId', moduleId);
+    assert.propertyVal(defaultTSConfig.angularCompilerOptions, 'annotateForClosureCompiler', false);
   });
 
   it('parseConfigFile (Extends configs)', () => {

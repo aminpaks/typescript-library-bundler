@@ -53,22 +53,22 @@ export function createNGCConfig(filePath: string, moduleId: string, configs?: TS
       module: 'es2015',
       sourceMap: false,
       declaration: true,
-      lib: [
-        'es2017',
-        'dom',
-      ],
     },
     angularCompilerOptions: {
       strictMetadataEmit: true,
-      skipTemplateCodegen: true,
-      annotateForClosureCompiler: true,
 
       flatModuleOutFile: moduleId + '.js',
     },
   }, configs);
 
-  if (!isNil(result.angularCompilerOptions) && isNil(result.angularCompilerOptions.flatModuleId)) {
-    result.angularCompilerOptions.flatModuleId = moduleId;
+  if (isNil(result.angularCompilerOptions!.annotateForClosureCompiler)) {
+    result.angularCompilerOptions!.annotateForClosureCompiler = true;
+  }
+  if (isNil(result.angularCompilerOptions!.skipTemplateCodegen)) {
+    result.angularCompilerOptions!.skipTemplateCodegen = true;
+  }
+  if (isNil(result.angularCompilerOptions!.flatModuleId)) {
+    result.angularCompilerOptions!.flatModuleId = moduleId;
   }
   if (!isNil(result.include)) {
     delete result.include;
