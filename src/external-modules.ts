@@ -19,7 +19,7 @@ export async function getExternalModuleNames(fileList: FileHandler[], projectPat
   const externalModuleNames: ExternalModules = {};
   const nodeModulePaths = await resolveNodeModulePaths(projectPath);
 
-  const potentialExternalModules = fileList.reduce((allModuleNames, aFile) =>
+  const potentialExternalModules = fileList.reduce<string[]>((allModuleNames, aFile) =>
     uniqueArray(allModuleNames, aFile.getExternalModules()), []);
 
   const uniqueModuleNames = uniqueArray(potentialExternalModules, keys(predefined))

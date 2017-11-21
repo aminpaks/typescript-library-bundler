@@ -91,6 +91,7 @@ export interface TSConfigs {
     externals?: ExternalModules;
     externalModules?: ExternalModules<string | false> | false;
     commonJsSettings?: any;
+    plugins?: BundlerPluginsOptions;
   };
 }
 
@@ -116,4 +117,24 @@ export interface NodePackage {
 
 export interface ExternalModules<T = string> {
   [moduleName: string]: T;
+}
+
+export interface LessCompilerOptions {
+  globalVar?: string;
+  modifyVar?: string;
+  paths?: string[];
+  strictMath?: boolean;
+  strictUnits?: boolean;
+  relativeUrls?: boolean;
+  plugins?: string[] | LessPlugin[];
+}
+
+export interface LessPlugin {
+  install: (less: any, pluginManager: any) => void;
+  minVersion: number[];
+}
+
+export interface BundlerPluginsOptions {
+  // Less compiler options
+  less?: LessCompilerOptions;
 }

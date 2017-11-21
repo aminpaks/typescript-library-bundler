@@ -12,8 +12,11 @@ import 'rxjs/add/observable/of';
 @Component({
   selector: 'selector',
   templateUrl: './component.html',
-  styleUrls: ['./component.css', './component-second.less',
-              './component-third.scss'],
+  styleUrls: [
+    './component.css',
+    './component-second.less',
+    './component-third.scss',
+  ],
 })
 export class AwesomeComponent implements OnInit {
   constructor() { }

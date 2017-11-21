@@ -17,6 +17,11 @@
     "entry": "./src/public_api.ts",
     "externals": {
       "lodash": "_"
+    },
+    "plugins": {
+      "less": {
+        "strictMath": true
+      }
     }
   }
 }
