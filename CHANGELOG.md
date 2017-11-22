@@ -1,5 +1,13 @@
 # typescript-library-bundler changelog
 
+## 0.2.0
+
+* Introduces new arguments in CLI:
+  * `--outDir` or `-o` is a relative path to project to emit the result (e.g: `--outDir ./build`)
+  * `--noClean` or `-k` turns off cleaning bundle directory
+  * `--noPkgValidation` or `-g` turns off validating package
+  * `--noDepsValidation` or `-d` turns off validating dependency packages
+
 ## 0.1.7
 
 * Fixes LessCompiler issue not being able to resolve URL starting with tilde ([#10](https://github.com/aminpaks/typescript-library-bundler/issues/10))

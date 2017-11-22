@@ -138,3 +138,10 @@ export interface BundlerPluginsOptions {
   // Less compiler options
   less?: LessCompilerOptions;
 }
+
+export interface BundlerBuildOptions {
+  outDir?: string;
+  noClean?: boolean;
+  noPkgValidation?: boolean;
+  noDepsValidation?: boolean;
+}

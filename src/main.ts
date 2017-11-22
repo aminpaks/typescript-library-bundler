@@ -1,5 +1,5 @@
 /**
- * @license Typescript-Library-Bundler v0.0.14
+ * @license Typescript-Library-Bundler v0.2.0
  * (c) 2017 Amin Paks <amin.pakseresht@hotmail.com>
  * License: MIT
  */
@@ -12,7 +12,7 @@ import { preprocessTSFiles } from './preprocess-files';
 import { getExternalModuleNames } from './external-modules';
 import { getTranspileOptions, transpileModule } from './tsc';
 import { defaultConfigs as rollupConfig, rollupBy } from './rollup';
-import { ExternalModules } from './types';
+import { BundlerBuildOptions, ExternalModules } from './types';
 import {
   createNGCConfig,
   getSafePackageName,
@@ -33,7 +33,7 @@ import {
 } from './utils';
 
 
-export async function main(projectPath: string, configFilePath?: string): Promise<void> {
+export async function main(projectPath: string, configFilePath?: string, buildOptions: BundlerBuildOptions = {}): Promise<void> {
 
   if (!path.isAbsolute(projectPath)) {
     projectPath = path.resolve(process.cwd(), projectPath);
@@ -65,7 +65,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
 
   const packageFilePath = path.resolve(projectPath, 'package.json');
   const buildDir = path.resolve(projectPath, '.compile');
-  const defaultOutDir = bundlerOptions.outDir || './dist';
+  const defaultOutDir = buildOptions.outDir || bundlerOptions.outDir || './dist';
   const outDir = path.resolve(projectPath, defaultOutDir);
 
   const packageConfigs = readPackage(packageFilePath);
@@ -87,11 +87,17 @@ export async function main(projectPath: string, configFilePath?: string): Promis
 
   // Clean up working directory
   ensureRemoveDir(buildDir);
-  ensureRemoveDir(outDir);
   ensureMakeDir(buildDir);
 
   // Bundler plugins options
   const { plugins: bundlerPluginsOptions = {} } = bundlerOptions;
+  // Skip clean-up if project path is equal out dir
+  if (projectPath === outDir) {
+    console.log(`Warning: Skipping cleaning build dir because it's equal the current working directory!`); // `;
+  } else if (buildOptions.noClean !== true) {
+    ensureRemoveDir(outDir);
+  }
+
   // Preprocess typescript files
   const projectFileList = await preprocessTSFiles(entryFile, buildDir, projectRootDir, bundlerPluginsOptions);
 
@@ -175,15 +181,19 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   });
 
   // Validation of dependencies in package.json
-  const { keys } = Object;
-  validatePkgDependencies(packageConfigs, keys(libraryExternalModules));
+  if (buildOptions.noDepsValidation !== true) {
+    const { keys } = Object;
+    validatePkgDependencies(packageConfigs, keys(libraryExternalModules));
+  }
 
   // Validation of distribution files in package.json
-  const outputTypings = path.resolve(outDir, moduleId + '.d.ts');
-  validatePkgModuleEntries({
-    pkgMain: outputUMDModule,
-    pkgModule: outputES5Module,
-    pkgES2015: outputES6Module,
-    pkgTypings: outputTypings,
-  }, packageConfigs, projectPath);
+  if (buildOptions.noPkgValidation !== true) {
+    const outputTypings = path.resolve(outDir, moduleId + '.d.ts');
+    validatePkgModuleEntries({
+      pkgMain: outputUMDModule,
+      pkgModule: outputES5Module,
+      pkgES2015: outputES6Module,
+      pkgTypings: outputTypings,
+    }, packageConfigs, projectPath);
+  }
 }
