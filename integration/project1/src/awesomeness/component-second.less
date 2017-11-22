@@ -1,9 +1,6 @@
 // Less comments are JS alike
 
 // Import modules
-@import '~less/test/less/url-args/urls.less';
-@import "~less/test/less/css-3.less";
-@import (inline) "~less/test/css/parens.css";
 @import (reference) "~less/test/less/variables.less";
 
 // CSS deep selector
@@ -17,7 +14,7 @@ table @{deep} br {
   display: block;
   width: calc(100% - 20px);
   height: (200px - 10px);
-  background: @important-var-two;
+  border-top-width: @important-var-two;
 
   background-image: data-uri('image/svg+xml;base64', '~less/test/data/image.svg');
 
