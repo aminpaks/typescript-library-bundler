@@ -23,7 +23,7 @@ export async function renderLess(content: string, filePath: string, projectRootD
     finalCompilerOptions.filename = path.join(currentDir, path.basename(filePath));
     finalCompilerOptions.plugins = [LessResolver({ nodeModulePaths })];
 
-    const lessResult = await less.render(content, finalCompilerOptions as Less.Options);
+    const lessResult = await less.render(content, finalCompilerOptions);
     result = lessResult.css;
   } catch (err) {
     throw new Error(`Less compiler ${err.message}\n\nWhile compiling => "${content}`);

@@ -83,10 +83,6 @@
     "@types/relateurl" "*"
     "@types/uglify-js" "*"
 
-"@types/less@^0.0.32":
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/@types/less/-/less-0.0.32.tgz#7e36ccbfc730278dc33ab4b90b111ca32e532410"
-
 "@types/lodash-es@^4.14.6":
   version "4.14.6"
   resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.14.6.tgz#c11d48d77f46b0aa9fae2a152b8259c23891efd1"
