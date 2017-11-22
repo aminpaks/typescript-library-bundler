@@ -42,7 +42,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   if (isNil(configFilePath)) {
     configFilePath = path.resolve(projectPath, 'tsconfig.json');
   }
-  const configFileDir = path.dirname(configFilePath);
+  const projectRootDir = path.dirname(configFilePath);
   const { configs, error } = parseConfigFile(configFilePath);
 
   if (!isNil(error)) {
@@ -54,7 +54,7 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   const { entry: possibleEntry } = bundlerOptions;
 
   if (isString(possibleEntry) && !isEmpty(possibleEntry)) {
-    entryFile = path.resolve(configFileDir, possibleEntry);
+    entryFile = path.resolve(projectRootDir, possibleEntry);
   } else {
     throw new Error('Project tsconfig must have an "entry" that points to the a file to export the library implementations!');
   }
@@ -90,8 +90,10 @@ export async function main(projectPath: string, configFilePath?: string): Promis
   ensureRemoveDir(outDir);
   ensureMakeDir(buildDir);
 
+  // Bundler plugins options
+  const { plugins: bundlerPluginsOptions = {} } = bundlerOptions;
   // Preprocess typescript files
-  const projectFileList = await preprocessTSFiles(entryFile, buildDir, configFileDir);
+  const projectFileList = await preprocessTSFiles(entryFile, buildDir, projectRootDir, bundlerPluginsOptions);
 
   // Resolve all external modules
   const { externals, externalModules = {} } = bundlerOptions;

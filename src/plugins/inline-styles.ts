@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { FileHandler } from '../file';
 import { HandlerPlugin } from '../preprocess-files';
+import { BundlerPluginsOptions } from '../types';
 import {
   isEmpty,
   isFile,
@@ -12,7 +13,7 @@ import { minifyCSS } from './css-tools';
 import { renderLess } from './less-render';
 import { renderSass } from './sass-render';
 
-export const InlineStyles: HandlerPlugin = async (file: FileHandler): Promise<string> => {
+export const InlineStyles: HandlerPlugin = async (file: FileHandler, projectDir: string, pluginsOptions: BundlerPluginsOptions): Promise<string> => {
   const styleUrlsRE = /(styleUrls\s*):\s*\[([^\]]+)\]/gi;
   const StyleUrlsMatchFullIndex = 0;
   const StyleUrlsMatchStylesKeyIndex = 1;
@@ -48,14 +49,14 @@ export const InlineStyles: HandlerPlugin = async (file: FileHandler): Promise<st
 
       switch (styleFileExt) {
         case '.less':
-          const lessResult = await renderLess(styleContent, file.dirPath, process.cwd());
+          const lessResult = await renderLess(styleContent, file.filePath, projectDir, pluginsOptions);
           if (!isEmpty(lessResult)) {
             styleContent = lessResult;
           }
           break;
 
         case '.scss':
-          const sassResult = await renderSass(styleContent, file.dirPath, process.cwd());
+          const sassResult = await renderSass(styleContent, file.dirPath, projectDir);
           if (!isEmpty(sassResult)) {
             styleContent = sassResult;
           }
