@@ -22,6 +22,14 @@ if (typeof entry === 'string') {
         target: 'es2016',
         module: 'commonjs',
         sourceMap: true,
+        noUnusedLocals: false,
+        noUnusedParameters: false,
+        noImplicitAny: false,
+        noImplicitReturns: false,
+        noImplicitThis: false,
+        declaration: false,
+        strict: false,
+        strictNullChecks: false,
         lib: [
           'es2017',
         ]
