@@ -1,7 +1,7 @@
 {
   "name": "typescript-library-bundler",
   "description": "Bundle a typescript library and makes it ready to ship for ES6, ES5, CommonJS and UMD",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "license": "MIT",
   "bin": {
     "tsb": "./dist/cli.js"
@@ -17,8 +17,8 @@
     "compile:test": "tsc -p test",
     "integration": "node integration/run.js",
     "lint": "npm-run-all -p lint:*",
-    "lint:lib": "tslint -p tsconfig.json --type-check",
-    "lint:test": "tslint -p test --type-check",
+    "lint:lib": "tslint -p tsconfig.json",
+    "lint:test": "tslint -p test",
     "debug": "node --inspect-brk ./debug-ts.js",
     "debug:cli": "ts-node --inspect-brk ./src/cli.ts",
     "test": "npm-run-all test:*",
@@ -84,7 +84,7 @@
     "rimraf": "^2.6.1",
     "rxjs": "^5.4.3",
     "ts-node": "^3.3.0",
-    "tslint": "^5.6.0",
+    "tslint": "^5.8.0",
     "typescript": "^2.5.2",
     "zone.js": "^0.8.16"
   },
