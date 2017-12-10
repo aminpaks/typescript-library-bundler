@@ -117,6 +117,7 @@ Create a new section called `externalModules` in `bundlerOptions` and define the
  
 ## CLI Parameters
 Here is the list of all available arguments that CLI accepts with their descriptions:
+
 | Argument | Shorthand | Description |
 | -------- | :-------: | ----------- |
 | project | p | Either the project path (with a default `tsconfig.json`) or a path to a `tsconfig-build.json` |
