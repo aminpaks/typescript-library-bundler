@@ -25,10 +25,15 @@
       ],
       "args": [
         "--",
-        "-p",
-        "./integration/project4",
         "--project",
-        "./integration/project4"
+        "./integration/project4",
+        "--outDir",
+        "./lib",
+        "--noClean2",
+        "--checkIn",
+        "'the value of check in'",
+        "--noDepsValidation",
+        "--noPkgValidation"
       ],
       "port": 9229,
       "protocol": "inspector",

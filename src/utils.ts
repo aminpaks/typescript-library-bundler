@@ -194,3 +194,13 @@ export function isAngularLib(externals: ExternalModules): boolean {
 export function isOfType<T>(_value: any, check: (value: any) => boolean): _value is T {
   return check && check(_value);
 }
+
+
+export function parseJSON<T = any>(value: string): T {
+  try {
+    return JSON.parse(value);
+
+  } catch {
+    return { } as T;
+  }
+}
