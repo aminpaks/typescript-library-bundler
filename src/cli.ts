@@ -19,8 +19,8 @@ export function parseArguments(args: string[]): {
 } {
   const minimistOptions = {
     alias: {
-      'o': 'outDir',
       'p': 'project',
+      'o': 'outDir',
       'k': 'noClean',
       'g': 'noPkgValidation',
       'd': 'noDepsValidation',

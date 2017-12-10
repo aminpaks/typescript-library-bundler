@@ -116,8 +116,16 @@ Create a new section called `externalModules` in `bundlerOptions` and define the
 
  
 ## CLI Parameters
-The cli tool can receive your project path or its tsconfig by passing it as an argument of `p` or `project` as following example `tsb -p ./tsconfig-build.json` or `tsb --project ../`.  
-If you don't provide `project` parameter it will try to load the current working directory and look for a `tsconfig.json`.
+Here is the list of all available arguments that CLI accepts with their descriptions:
+| Argument | Shorthand | Description |
+| -------- | :-------: | ----------- |
+| project | p | Either the project path (with a default `tsconfig.json`) or a path to a `tsconfig-build.json` |
+| outDir  | o | A relative path that bundler will emit the result |
+| noClean | k | Disable cleaning the out directory before each compilation |
+| noPkgValidation | g | Disable the warnings for incorrect entries of package.json |
+| noDepsValidation | d | Disable the warnings for missing dependencies |
+
+Note: TSB would work without passing any arguments as well. It will look for a `tsconfig.json` in the current working directory.
 
 ## Wiki
 Read more information [here](https://github.com/aminpaks/typescript-library-bundler/wiki).
