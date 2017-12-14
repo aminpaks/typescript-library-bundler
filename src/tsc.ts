@@ -48,7 +48,7 @@ export function getSourceWithMap(filePath: string): CodeWithMap | undefined {
 
   } else {
     let map: string | null = null;
-    const mapFilePath = matchArray[1];
+    const mapFilePath = path.resolve(path.dirname(filePath), matchArray[1]);
 
     code = code.replace(matchArray[0], '');
 
