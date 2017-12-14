@@ -1,5 +1,9 @@
 # typescript-library-bundler changelog
 
+## 0.2.1
+
+* Fixes a minor bug in source-maps
+
 ## 0.2.0
 
 * Introduces new arguments in CLI:
