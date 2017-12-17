@@ -133,9 +133,11 @@ Read more information [here](https://github.com/aminpaks/typescript-library-bund
 
 ## Contributes
 To debug follow these steps:
-1. Clone the project `git clone https://github.com/aminpaks/typescript-library-bundler`
-2. Install dependencies `cd typescript-library-bundler && yarn install`
-4. Run debugger from debug section of vscode `Debug integration`
+1. Make sure you have the latest stable node (v8.x.x)
+2. Clone the project `$ git clone https://github.com/aminpaks/typescript-library-bundler`
+3. Install dependencies `$ cd typescript-library-bundler && yarn install`
+4. Open the project in vscode `$ code .`
+5. Run debugger from debug section of vscode `Debug integration`
 
 To verify & build:
 1. Run `yarn run verify`
