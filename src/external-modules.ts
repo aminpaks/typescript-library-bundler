@@ -64,8 +64,9 @@ export async function resolveNodeModulePaths(searchInPath: string): Promise<stri
   }
 
   const parentDir = path.dirname(searchInPath);
+  const { root } = path.parse(parentDir);
 
-  if (parentDir !== '/') {
+  if (parentDir !== root) {
     nodeModulePaths = uniqueArray(nodeModulePaths, await resolveNodeModulePaths(parentDir));
   }
 
