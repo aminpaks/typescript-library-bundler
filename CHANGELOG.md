@@ -2,7 +2,7 @@
 
 ## 0.2.2
 
-* Fixes a minor bug in a recursive call on Windows machines
+* Fixes a minor bug in a recursive call on Windows machines ([#17](https://github.com/aminpaks/typescript-library-bundler/issues/17))
 
 ## 0.2.1
 
