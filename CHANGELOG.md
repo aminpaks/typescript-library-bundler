@@ -1,5 +1,9 @@
 # typescript-library-bundler changelog
 
+## 0.2.2
+
+* Fixes a minor bug in a recursive call on Windows machines
+
 ## 0.2.1
 
 * Fixes a minor bug in source-maps
