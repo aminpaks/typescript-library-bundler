@@ -1,5 +1,10 @@
 # typescript-library-bundler changelog
 
+## 1.0.0
+
+* Compiling the library by Typescript compiler instead of Angular compiler
+* Dynamically resolve and compile by Angular compiler of version 4 or 5 if any installed
+
 ## 0.2.1
 
 * Fixes a minor bug in source-maps
