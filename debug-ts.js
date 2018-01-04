@@ -30,9 +30,6 @@ if (typeof entry === 'string') {
         declaration: false,
         strict: false,
         strictNullChecks: false,
-        lib: [
-          'es2017',
-        ]
       },
     });
 
