@@ -145,3 +145,8 @@ export interface BundlerBuildOptions {
   noPkgValidation?: boolean;
   noDepsValidation?: boolean;
 }
+
+export interface CompileResult {
+  dir: string;
+  entry: string;
+}

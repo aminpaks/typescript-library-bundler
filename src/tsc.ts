@@ -1,16 +1,24 @@
 import * as path from 'path';
-import { RawSourceMap, SourceMapConsumer, SourceMapGenerator } from 'source-map';
+import {
+  RawSourceMap,
+  SourceMapConsumer,
+  SourceMapGenerator,
+} from 'source-map';
 import {
   CompilerOptions,
   createProgram,
   flattenDiagnosticMessageText,
   getPreEmitDiagnostics,
   ModuleKind,
+  parseJsonConfigFileContent,
   ScriptTarget,
+  sys,
   transpileModule as tscTranspile,
   TranspileOptions,
 } from 'typescript';
 import {
+  findFiles,
+  isEmpty,
   isFile,
   isNil,
   isString,
@@ -19,6 +27,11 @@ import {
   readFile,
   writeFile,
 } from './utils';
+import {
+  CompileResult,
+  TSConfigs,
+} from './types';
+import { getTSConfig } from './config-helpers';
 
 export interface CodeWithMap {
   code: string;
@@ -184,4 +197,54 @@ export function compileFiles(fileNames: string[], options: CompilerOptions): voi
   const exitCode = emitResult.emitSkipped ? 1 : 0;
   console.log(`Process exiting with code '${exitCode}'.`);
   process.exit(exitCode);
+}
+
+export async function compileLibrary({
+  entry,
+  configs,
+  buildDir,
+}: {
+    entry: string;
+    configs: TSConfigs;
+    buildDir: string;
+    basePath?: string;
+  }): Promise<CompileResult> {
+  const outDirName = 'tsc-compiled';
+  const entryFileName = path.basename(entry).replace(/(\.tsx?)/i, '.js');
+  const tsCompileConfigs = getTSConfig(outDirName, configs);
+
+  const parsedCommandLine = parseJsonConfigFileContent(tsCompileConfigs, sys, buildDir);
+
+  if (!isEmpty(parsedCommandLine.errors)) {
+    throw new Error('Cannot parse config file\n\n' + parsedCommandLine.errors.join('\n'));
+  }
+
+  const program = createProgram(parsedCommandLine.fileNames, parsedCommandLine.options);
+  const emitResult = program.emit();
+
+  const allDiagnostics = getPreEmitDiagnostics(program).concat(emitResult.diagnostics);
+
+  if (!isEmpty(allDiagnostics)) {
+    allDiagnostics.forEach(diagnostic => {
+      if (diagnostic.file) {
+        const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+        const message = flattenDiagnosticMessageText(diagnostic.messageText, '\n');
+        console.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+      }
+      else {
+        console.log(`${flattenDiagnosticMessageText(diagnostic.messageText, '\n')}`);
+      }
+    });
+
+    throw new Error('Compilation failed!');
+  }
+
+  const [compiledEntry] = await findFiles(`**/${entryFileName}`, {
+    cwd: path.resolve(buildDir, outDirName),
+  });
+
+  return {
+    dir: path.resolve(buildDir, outDirName),
+    entry: path.resolve(buildDir, outDirName, compiledEntry),
+  };
 }

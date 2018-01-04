@@ -1,20 +1,19 @@
 /**
- * @license Typescript-Library-Bundler v0.2.1
+ * @license Typescript-Library-Bundler v1.0.0
  * (c) 2017 Amin Paks <amin.pakseresht@hotmail.com>
  * License: MIT
  */
 
 import * as path from 'path';
 import * as uglify from 'rollup-plugin-uglify';
-import { main as ngcCompiler } from '@angular/tsc-wrapped';
 
 import { preprocessTSFiles } from './preprocess-files';
 import { getExternalModuleNames } from './external-modules';
-import { getTranspileOptions, transpileModule } from './tsc';
+import { compileLibrary as compileLibraryByNGC } from './ngc';
+import { compileLibrary as compileLibraryByTSC, getTranspileOptions, transpileModule } from './tsc';
 import { defaultConfigs as rollupConfig, rollupBy } from './rollup';
-import { BundlerBuildOptions, ExternalModules } from './types';
+import { BundlerBuildOptions, CompileResult, ExternalModules } from './types';
 import {
-  createNGCConfig,
   getSafePackageName,
   parseConfigFile,
   readPackage,
@@ -112,20 +111,32 @@ export async function main(projectPath: string, configFilePath?: string, buildOp
     libraryExternalModules = await getExternalModuleNames(projectFileList, projectPath, externals || externalModules);
   }
 
-  // AngularCompiler configurations
-  const ngcBuildDir = path.resolve(buildDir, 'ngc-compiled');
-  const ngcConfigPath = path.resolve(buildDir, 'tsconfig-ngc.json');
-  createNGCConfig(ngcConfigPath, moduleId, configs);
+  const isAngular = isAngularLib(libraryExternalModules);
 
-  // Compile with NGC
-  await ngcCompiler(ngcConfigPath, { basePath: buildDir });
+  // Compiling
+  let compileResult: CompileResult;
+  if (isAngular) {
+    compileResult = await compileLibraryByNGC({
+      configs,
+      buildDir,
+      moduleId,
+    });
+  } else {
+    compileResult = await compileLibraryByTSC({
+      configs,
+      buildDir,
+      entry: entryFile,
+    });
+  }
 
   const { commonJsSettings } = bundlerOptions;
   const outputES5Module = path.resolve(outDir, moduleId + '.es5.js');
   const outputES6Module = path.resolve(outDir, moduleFilename);
 
+  // Entry of compiled code
+  const rollupEntryFile = compileResult.entry;
+
   // Bundle for ES6
-  const rollupEntryFile = path.resolve(ngcBuildDir, moduleFilename);
   const rollupES2015Config = rollupConfig({
     moduleEntry: rollupEntryFile,
     moduleName: moduleId,
@@ -141,6 +152,7 @@ export async function main(projectPath: string, configFilePath?: string, buildOp
     moduleName: moduleId,
     fileName: moduleId,
   });
+
   await transpileModule(outputES6Module, transpileConfigES5, outputES5Module);
 
   // CommonJS bundles directory
@@ -172,11 +184,10 @@ export async function main(projectPath: string, configFilePath?: string, buildOp
   await rollupBy(rollupMinifiedUMDConfig);
 
   // Copy declarations and metadata files
-  const isAngular = isAngularLib(libraryExternalModules);
   const copyDeclarationPattern = `**/*(*.d.ts${isAngular ? '|*.metadata.json' : ''})`;
   await copyFromTo({
     pattern: copyDeclarationPattern,
-    rootDir: ngcBuildDir,
+    rootDir: compileResult.dir,
     toDir: outDir,
   });
 

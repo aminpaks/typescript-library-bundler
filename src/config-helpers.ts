@@ -89,6 +89,35 @@ export function createNGCConfig(filePath: string, moduleId: string, configs?: TS
   writeFile(filePath, resultString);
 }
 
+export function getTSConfig(outDir: string, configs?: TSConfigs): TSConfigs {
+  const result = mergeInto(<TSConfigs>{
+    compilerOptions: {
+      outDir,
+      baseUrl: '.',
+      target: 'es2015',
+      module: 'es2015',
+      sourceMap: false,
+      declaration: true,
+    },
+  }, configs);
+
+  if (!isNil(result.include)) {
+    delete result.include;
+  }
+  if (!isNil(result.exclude)) {
+    delete result.exclude;
+  }
+  if (isNil(result.files)) {
+    const { bundlerOptions: { entry = '' } = {} } = result;
+    result.files = [entry];
+  }
+  if (!isNil(result.bundlerOptions)) {
+    delete result.bundlerOptions;
+  }
+
+  return result;
+}
+
 export function readPackage(packageFilePath: string): NodePackage {
   const content = readFile(packageFilePath);
   try {

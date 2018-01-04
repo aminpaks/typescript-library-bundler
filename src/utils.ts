@@ -11,7 +11,7 @@ import { ExternalModules } from './types';
 
 const { keys } = Object;
 
-export function copyFromTo({ pattern, rootDir, toDir, excludes = [] } : {
+export function copyFromTo({ pattern, rootDir, toDir, excludes = [] }: {
   pattern: string;
   rootDir: string;
   toDir: string;
@@ -61,6 +61,19 @@ export function copyFromTo({ pattern, rootDir, toDir, excludes = [] } : {
         .catch((err_1) => {
           reject(err_1);
         });
+    });
+  });
+}
+
+export function findFiles(pattern: string, options: glob.IOptions = {}): Promise<string[]> {
+  return new Promise((resolve, reject) => {
+    glob(pattern, { ...options }, (err, files) => {
+
+      if (!isNil(err)) {
+        reject(new Error(err.message + (err.stack ? '\n\n' + err.stack : null)));
+      }
+
+      resolve(files);
     });
   });
 }
@@ -201,6 +214,14 @@ export function parseJSON<T = any>(value: string): T {
     return JSON.parse(value);
 
   } catch {
-    return { } as T;
+    return {} as T;
   }
+}
+
+export function clearError(err: any): string {
+  const message = err.stack || err.message || err;
+
+  debugger;
+
+  return message;
 }
