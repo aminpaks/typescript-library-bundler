@@ -6,7 +6,8 @@
 
 With help of this tool you can bundle your typescript library to javascript and make it ready to ship for ES6, ES5, CommonJS and UMD.
 
-Good news is you can bundle your Angular library as well, it will inline your styles & template automatically. Right now it supports `LESS`, `SCSS` and `CSS` for styles of Angular components.
+Good news is you can bundle your Angular library as well, it will inline your styles & template automatically. Right now it supports `LESS`, `SCSS` and `CSS` for styles of Angular components.  
+**Important Note** for those who are compiling an Angular related library, [read more here](#compiler-version).
 
 ## Installation
 Let's get started by installing it from [npm repository](https://www.npmjs.com/package/typescript-library-bundler)
@@ -127,6 +128,17 @@ Here is the list of all available arguments that CLI accepts with their descript
 | noDepsValidation | d | Disable the warnings for missing dependencies |
 
 Note: TSB would work without passing any arguments as well. It will look for a `tsconfig.json` in the current working directory.
+
+## Compiler Version
+Since version 1.0.0 TSB is including the latest and greatest version of Typescript compiler by default. If you would like to compile your code with a specific version of Typescript compiler you may install it specifically inside your project. TSB will compile the code by the current available version of Typescript compiler.  
+
+**Angular:** A note for Angular users, TSB will not include Angular compiler by default anymore. Make sure you include at least one version of these packages `@angular/compiler`, `@angular/compiler-cli` and `typescript` inside of your project and TSB will pick them up automatically. TSB will ask for an Angular compiler if inside of your source code you're using Angular 2+ core or related libraries. It is worth mentioning that TSB now is compatible with both Angular compiler version 4 and 5.
+
+- Installing the latest Angular compiler: `$ yarn add @angular/compiler @angular/compiler-cli`
+- Installing an Angular compiler version 4: `$ yarn add @angular/compiler@^4.3.0 @angular/compiler-cli@^4.3.0`
+- Upgrading to the latest Angular compiler: `$ yarn upgrade @angular/compiler @angular/compiler-cli`
+- Installing a specific Typescript compiler: `$ yarn add typescript@^2.1.0`
+
 
 ## Wiki
 Read more information [here](https://github.com/aminpaks/typescript-library-bundler/wiki).
