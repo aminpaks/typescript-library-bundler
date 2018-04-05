@@ -28,6 +28,39 @@ describe('ConfigHelpers', () => {
     assert.property(defaultTSConfig, 'compilerOptions');
 
     const moduleId = 'check-mod';
+    const flatModuleId = '@scope/module';
+    createNGCConfig(ngcConfigsPath, moduleId, defaultTSConfig, flatModuleId);
+
+    ({ configs: defaultTSConfig, error  } = parseConfigFile(ngcConfigsPath));
+
+    assert.isDefined(defaultTSConfig, 'files');
+    assert.isArray(defaultTSConfig.files);
+    assert.deepEqual(defaultTSConfig.files, ['./src/public_api.ts']);
+
+    assert.isUndefined(error);
+    assert.property(defaultTSConfig, 'compilerOptions');
+    assert.propertyVal(defaultTSConfig.compilerOptions, 'outDir', './ngc-compiled');
+    assert.propertyVal(defaultTSConfig.compilerOptions, 'module', 'es2015');
+
+    assert.property(defaultTSConfig, 'angularCompilerOptions');
+    assert.propertyVal(defaultTSConfig.angularCompilerOptions, 'flatModuleId', flatModuleId);
+    assert.propertyVal(defaultTSConfig.angularCompilerOptions, 'annotateForClosureCompiler', false);
+  });
+
+
+  it('createNGCConfig: no flatModuleId', () => {
+
+    const ngcConfigsPath = path.resolve(__dirname, 'tsconfig.ngc.json');
+
+    let { configs: defaultTSConfig, error } = parseConfigFile(defaultTSConfigPath);
+    defaultTSConfig.angularCompilerOptions = {
+      annotateForClosureCompiler: false,
+    };
+
+    assert.isUndefined(error);
+    assert.property(defaultTSConfig, 'compilerOptions');
+
+    const moduleId = 'check-mod';
     createNGCConfig(ngcConfigsPath, moduleId, defaultTSConfig);
 
     ({ configs: defaultTSConfig, error  } = parseConfigFile(ngcConfigsPath));

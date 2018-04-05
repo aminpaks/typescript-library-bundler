@@ -115,7 +115,7 @@ export async function main(projectPath: string, configFilePath?: string, buildOp
   // AngularCompiler configurations
   const ngcBuildDir = path.resolve(buildDir, 'ngc-compiled');
   const ngcConfigPath = path.resolve(buildDir, 'tsconfig-ngc.json');
-  createNGCConfig(ngcConfigPath, moduleId, configs);
+  createNGCConfig(ngcConfigPath, moduleId, configs, packageName);
 
   // Compile with NGC
   await ngcCompiler(ngcConfigPath, { basePath: buildDir });
