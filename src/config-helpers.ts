@@ -44,7 +44,7 @@ export function getSafePackageName(name: string): string | undefined {
   return name.replace(/[^\w-]/g, '-').replace(/^-+/, '');
 }
 
-export function createNGCConfig(filePath: string, moduleId: string, configs?: TSConfigs): void {
+export function createNGCConfig(filePath: string, moduleId: string, configs?: TSConfigs, flatModuleId?:string): void {
   const result = mergeInto(<TSConfigs>{
     compilerOptions: {
       outDir: './ngc-compiled',
@@ -68,7 +68,7 @@ export function createNGCConfig(filePath: string, moduleId: string, configs?: TS
     result.angularCompilerOptions!.skipTemplateCodegen = true;
   }
   if (isNil(result.angularCompilerOptions!.flatModuleId)) {
-    result.angularCompilerOptions!.flatModuleId = moduleId;
+    result.angularCompilerOptions!.flatModuleId = flatModuleId || moduleId;
   }
   if (!isNil(result.include)) {
     delete result.include;
