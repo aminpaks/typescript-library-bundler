@@ -1,5 +1,5 @@
 /**
- * @license Typescript-Library-Bundler v0.2.3
+ * @license Typescript-Library-Bundler v0.2.4
  * (c) 2017 Amin Paks <amin.pakseresht@hotmail.com>
  * License: MIT
  */
